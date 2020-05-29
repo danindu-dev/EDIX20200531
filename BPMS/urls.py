@@ -30,4 +30,6 @@ urlpatterns = [
     path('new_invoice/issue', dash_invo.issue, name = 'new_invoice_issue'),
     path('invoice/', dash_invo.invo_view, name = 'invoice_view'),
     path('invoice/<str:invo_num>', dash_invo.invo_preview, name = 'invo_preview'),
+    path('invoice/e/', dash_invo.invo_edit_update, name = 'invo_edit_update'),
+    path('invoice/e/<str:invo_num>', dash_invo.invo_edit, name = 'invo_edit'),
 ]

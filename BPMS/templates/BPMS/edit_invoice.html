@@ -6,22 +6,22 @@
             <div class="card card-primary">
            		<div class="card-body">
                 
-                <form action="{% url 'new_invoice_issue' %}" id="invoice_data" method="post">
+                <form action="{% url 'invo_edit_update' %}" id="invoice_data" method="post">
                 {% csrf_token %}
                   <div class="row " >
                   	<div class="col-sm-3" >
                     	<label>Invoice Number</label>
-                        <input type="text" class="form-control" placeholder="Invoice Number" name="invoice_number"  autocomplete="off" value="{% if new_invoice %}{{ new_invoice }}{% endif %}" required>
+                        <input type="text" class="form-control" placeholder="Invoice Number" name="invoice_number"  autocomplete="off" value="{{ invo_data.0.c_invoice_num|slice:str_slice }}" readonly>
                   	</div>
                     <div class="col-sm-3" >
                         <label>Invoice Date</label>
-                        <input type="date" class="form-control" name="invoice_date" id="invoice_date"  autocomplete="off" value="{{today}}" required>
+                        <input type="date" class="form-control" name="invoice_date" id="invoice_date"  autocomplete="off" value="{{invo_data.0.c_invoice_date|stringformat:'s'}}" readonly>
                   	</div>
                     <div class="col-sm-3" >
                         <label>Client ID</label>
                         <select class="form-control" name="cid" id="cidshort" oninput="cid1()">
                           {% for cid,cid_n in cid_comb.items %}
-                          <option value="{{cid|lower}}">{{cid|upper}}</option>
+                          <option value="{{cid|lower}}" {%if sub_cid == cid %}selected{%endif%}>{{cid|upper}}</option>
                           {% endfor %}
                         </select>
                   	</div>
@@ -29,7 +29,7 @@
                         <label>Client Name</label>
                         <select class="form-control" id="cidlong" oninput="cid2()">
                         	{% for cid,cid_n in cid_comb.items %}
-                          	<option value="{{cid|lower}}">{{cid_n}}</option>
+                          	<option value="{{cid|lower}}" {%if sub_cid == cid %}selected{%endif%}>{{cid_n}}</option>
                           	{% endfor %}
                         </select>
                   	</div>
@@ -38,15 +38,15 @@
                   <div class="row " >
                   	<div class="col-sm-3" >
                     	<label>Deduction</label>
-                        <input type="text" id="deduction" class="form-control" name="deduction_value" value="0" oninput="deductionaction()" autocomplete="off" required>
+                        <input type="text" id="deduction" class="form-control" name="deduction_value" value="{{invo_data.0.c_discount}}" oninput="deductionaction()" autocomplete="off" required>
                   	</div>
                     <div class="col-sm-3" >
                     	<label>Client PO Number</label>
-                        <input type="text" id="ponum" class="form-control" name="ponum" placeholder="(optional)"  autocomplete="off">
+                        <input type="text" id="ponum" class="form-control" name="ponum" placeholder="(optional)" value="{{invo_data.0.c_PO_num}}" autocomplete="off">
                   	</div>
                     <div class="col-sm-3" >
                         <label>Invoice Due Date</label>
-                        <input type="date" class="form-control" name="invoice_due_date" id="invoice_due_date"  autocomplete="off" value="{{due_date}}" required>
+                        <input type="date" class="form-control" name="invoice_due_date" id="invoice_due_date"  autocomplete="off" value="{{invo_data.0.c_due_date|stringformat:'s'}}" required>
                   	</div>
                     <div class="col-sm-3" >
                         
@@ -130,9 +130,9 @@
                               Add Item
                               <i class="nav-icon fas fa-plus-circle"></i>
                             </button>
-                            <input form="invoice_data" type="hidden" name="tax_name" id="tax_name" value="{{tax.tax_name}}">
-                              <input form="invoice_data" type="hidden" name="tax_amount" id="tax_amount" value="{{tax.tax_value}}">
-                              <input type="hidden" id="tax_defaul" value="{% if tax.tax_default == 1 %}add{%endif%}">
+                            <input form="invoice_data" type="hidden" name="tax_name" id="tax_name" value="{{invo_data.0.c_tax1_name}}">
+                              <input form="invoice_data" type="hidden" name="tax_amount" id="tax_amount" value="{{invo_data.0.c_tax1}}">
+                              <input type="hidden" id="tax_defaul" value="add">
                         </td>
                       <tr>
                   	  <tr id="hdtr2" style="visibility:collapse">
@@ -157,13 +157,13 @@
                       </tr>
                       <tr>
                         <td colspan="3"align="right">
-                        	<input type="hidden" form="invoice_data" name="g_total_to_submit" id="g_total_to_submit">
+                        	<input type="hidden" form="invoice_data" name="g_total_to_submit" id="g_total_to_submit" value="{{invo_data.0.c_total_amount}}">
                         	<button class="col-sm-2 btn btn-block btn-success" onclick="submitconfirm(confirm('Do you need to issue the invoice?'))">Issue
                             <i class="nav-icon fas fa-file-signature"></i>
                             </button>
-                            <textarea style="visibility:hidden; height:1px;" form="invoice_data" id="alltext" name="alltext"></textarea>
-  <textarea form="invoice_data" style="visibility:hidden; height:1px;" id="allnum" name="allnum"></textarea>
-  <textarea form="invoice_data" style="visibility:hidden; height:1px;" id="alltax" name="alltax"></textarea>
+                            <textarea style="visibility:hidden; height:1px;" form="invoice_data" id="alltext" name="alltext">{{invo_data.0.c_description}}</textarea>
+  <textarea form="invoice_data" style="visibility:hidden; height:1px;" id="allnum" name="allnum">{{invo_data.0.c_detail_amount}}</textarea>
+  <textarea form="invoice_data" style="visibility:hidden; height:1px;" id="alltax" name="alltax">{{invo_data.0.c_tax_string}}</textarea>
                             </td>
                       </tr>
                       

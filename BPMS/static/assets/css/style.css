@@ -6,7 +6,25 @@
 
 * { margin: 0; padding: 0; }
 body { font-family:"Times New Roman", Times, serif}
-#page-wrap { width: 800px; margin: 0 auto; }
+#page-wrap { width: 100%; margin: 0 auto; }
+#side-panel{
+	position:absolute;
+	width:25%;
+	background-color:#E5E5E5;
+
+	border:solid #CCC;
+	border-width:1px;
+	border-radius:10px;
+	top:1%;
+	right:1%;
+	margin:0 auto;
+	font-family:Arial, Helvetica, sans-serif;
+}
+#page-wrap-panel{
+	width:72%;
+	position:absolute;
+	left:1%;
+}
 
 textarea { border: 0; font: 14px Georgia, Serif; overflow: hidden; resize: none; }
 table { border-collapse: collapse; }
@@ -49,3 +67,51 @@ table td, table th { border: 1px solid black; padding: 5px; }
 #terms h5 { text-transform: uppercase; font: 13px Helvetica, Sans-Serif; letter-spacing: 10px; border-bottom: 1px solid black; padding: 0 0 8px 0; margin: 0 0 8px 0; }
 #terms textarea { width: 100%; text-align: center;}
 
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	width:32%;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    box-shadow: none;
+	
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    box-shadow: none;
+}
+
+.btn:disabled {
+    opacity: .65;
+    box-shadow: none;
+	cursor:not-allowed;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    box-shadow: none;
+}

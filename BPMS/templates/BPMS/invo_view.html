@@ -20,20 +20,36 @@
                         <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Client Name: activate to sort column ascending">
                             Client Name
                         </th>
+                         <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">
+                            Status
+                        </th>
                         <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Amount: activate to sort column ascending">
                             Amount
                         </th>
+                            <th>
+
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for obj,desc in invo_items.items %}
+                        {%if obj.c_status != 'revoked'%}
                         <tr role="row" class="odd">
                             <td tabindex="0" class="sorting_1"><a href="{% url 'invo_preview' obj.c_invoice_num|slice:str_slice%}">{{obj.c_invoice_num|slice:str_slice}}</a> </td>
                             <td>{{obj.c_invoice_date}}</td>
                             <td>{{desc}}</td>
                             <td>{{obj.sub_client_id.sub_client_name}}</td>
+                            <td style="color:{%if obj.c_status == 'open'%}red{%endif%}{%if obj.c_status == 'close'%}green{%endif%}">{{obj.c_status|upper}}</td>
                             <td align="right">{{obj.c_total_amount|floatformat:2}}</td>
+                            <td>
+                                <button class="btn btn-block btn-success btn-sm {%if obj.c_status == 'close'%}disabled{%endif%}"><i class="fas fa-hand-holding-usd"></i>Settle</button>
+                                {%if user_d.u_level == 'admin'%}
+                                <a href="{% url 'invo_edit' obj.c_invoice_num|slice:str_slice%}"><button class="btn btn-block btn-secondary btn-sm" ><i class="fas fa-edit"></i>Edit</button></a>
+                                {%endif%}
+
+                            </td>
                         </tr>
+                        {%endif%}
                         {% endfor %}
                         </tbody>
                     </table>

@@ -163,65 +163,35 @@ function submitconfirm(submitconf){
   setInputFilter(document.getElementById("deduction"), function(value) {
   return /^-?\d*[.,]?\d*$/.test(value); }); 
 
-/*var count = 1;
-function addnew(){
-	
-  var tableRef = document.getElementById('invoice_table').getElementsByTagName('tbody')[0];
-  	var addtext = document.getElementById('texttoadd').value;
-	var addnumfresh=document.getElementById('numtoadd').value;
-    var addnum = parseFloat(document.getElementById('numtoadd').value).toFixed(2);
-		var alltext = document.getElementById('alltext').value;
-    var allnum = document.getElementById('allnum').value;
-    if (!(addtext == "")){
-		if (!(addnumfresh == "")){
-			document.getElementById('alltext').value= alltext+"?"+addtext;
-			document.getElementById('allnum').value= allnum+"?"+addnum;
-			var total = parseFloat(document.getElementById('total').innerHTML)+parseFloat(addnum)
-			
-			document.getElementById('total').innerHTML = total.toFixed(2);
-			calc();
-			// Insert a row in the table at row index 0
-			var newRow   = tableRef.insertRow(tableRef.rows.length);
-		
-			// Insert a cell in the row at index 0
-			var newCell0  = newRow.insertCell(0);
-			var newCell1  = newRow.insertCell(1);
-			var newCell2  = newRow.insertCell(2);
-			// Append a text node to the cell
-			var newText  = document.createTextNode(addtext)
-			var newnum  = document.createTextNode(addnum)
-			var countstring = document.createTextNode(count)
-		
-			newCell0.appendChild(countstring);
-			newCell1.appendChild(newText);
-			newCell2.appendChild(newnum);
-			newCell2.style.textAlign = "right";
-			count++;
-			document.getElementById('texttoadd').value="";
-			document.getElementById('numtoadd').value="";
-		}
-	}
-    
-    document.getElementById('texttoadd').focus();
-  }
-  
-  function runScript(e) {
-    //See notes about 'which' and 'key'
-    if (e.keyCode == 13) {
-        addnew();
+function loaditems(){
+    var itemstring = document.getElementById('alltext').innerHTML;
+    var amountstring = document.getElementById('allnum').innerHTML;
+    var taxstring = document.getElementById('alltax').innerHTML;
+    var itemlist = itemstring.split("?");
+    var item_list_temp = itemlist.filter(Boolean);
+    var amountlist = amountstring.split("?");
+    var amount_list_temp = amountlist.filter(Boolean);
+    var taxlist = taxstring.split("?");
+    var tax_list_temp = taxlist.filter(Boolean);
+
+    for (row_count = 1,row_num = item_list_temp.length+1;row_count < row_num; row_count++){
+        additem()
+        document.getElementById('item_input_'+(row_count)).value=item_list_temp[row_count-1];
+        document.getElementById('amount_input_'+(row_count)).value=parseFloat(amount_list_temp[row_count-1]).toFixed(2);
+        if (tax_list_temp[row_count-1] == "add"){
+            document.getElementById('amount_tax_input_'+(row_count)).value= tax_amount;
+        }
+        else{
+            document.getElementById('amount_tax_input_'+(row_count)).value= 0;
+        }
+        item_input(row_count);
+        amount_input(row_count);
+        tax_cal(row_count);
+        deductionaction()
     }
+
+    /*for (textupdate="",arraycount = 0, len = item_list.length; arraycount < len; arraycount++) {
+      textupdate += item_list[arraycount] + "?";
+      document.getElementById('alltext').innerHTML = textupdate;
+    }*/
 }
-function runScript1(e) {
-    //See notes about 'which' and 'key'
-    if (e.keyCode == 13) {
-        document.getElementById('numtoadd').focus();
-    }
-}
-
-
-
-
-
-
-
-*/

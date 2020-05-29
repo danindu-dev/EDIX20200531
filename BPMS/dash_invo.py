@@ -3,6 +3,9 @@ from .models import *
 from datetime import datetime, timedelta
 from collections import OrderedDict
 
+
+
+
 def issue(request):
     if (request.method == "POST"):
         if request.POST['invoice_number'] and request.POST['invoice_date'] and request.POST['cid'] and request.POST['alltext'] and request.POST['allnum'] and request.POST['alltax'] and request.POST['g_total_to_submit'] and request.POST['invoice_due_date'] :
@@ -38,6 +41,43 @@ def issue(request):
                       {'user_d': users.objects.get(u_user_id=request.session['u_name']),'page_title':'New Invoice', 'save': 'not submited!'})
 
 
+def invo_edit_update(request):
+    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    if (request.method == "POST"):
+        invo_data_update = sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['invoice_number'])
+        invo_data_update.sub_client_id = sub_clients.objects.get(sub_client_id=str(user_d.u_mc_id.mc_id + request.POST['cid'].upper()))
+        invo_data_update.c_description = request.POST['alltext']
+        invo_data_update.c_detail_amount = request.POST['allnum']
+        invo_data_update.c_tax_string = request.POST['alltax']
+        invo_data_update.c_total_amount = float(request.POST['g_total_to_submit'])
+        invo_data_update.c_discount = float(request.POST.get('deduction_value', '0'))
+        invo_data_update.c_PO_num = request.POST.get('ponum', 'Not Available')
+        invo_data_update.c_due_date = request.POST['invoice_due_date']
+        invo_data_update.save()
+        return render(request, 'BPMS/new_invoice.html', {'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Edit Invoice', 'save': str(request.POST['invoice_number'])})
+    else:
+        return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Dashboard'})
+
+def invo_edit(request, invo_num):
+    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    invo_data = sub_credit_info.objects.filter(c_invoice_num=user_d.u_mc_id.mc_id + invo_num)
+    if invo_data:
+        mc_id_len = len(user_d.u_mc_id.mc_id)
+        str_slice = str(mc_id_len) + ":"
+        sub_cid = sub_clients.objects.filter(sub_mc_id=user_d.u_mc_id.mc_id)
+        cid_list = []
+        cid_name = []
+        for cid in sub_cid:
+            cid_list.append(cid.sub_client_id[mc_id_len:])
+            cid_name.append(cid.sub_client_name)
+        a = dict(zip(cid_list, cid_name))
+        cid_comb = OrderedDict(sorted(a.items()))
+        sub_cid = invo_data[0].sub_client_id.sub_client_id[mc_id_len:]
+        return render(request, 'BPMS/edit_invoice.html', {'cid_comb': cid_comb, 'sub_cid': sub_cid,'user_d': users.objects.get(u_user_id=request.session['u_name']),'str_slice': str_slice, 'page_title': 'Edit Invoice','invo_data': invo_data})
+    else:
+        return render(request, 'BPMS/dash.html',
+                      {'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'Dashboard'})
+
 
 def new_invoice(request):
     user_d = users.objects.get(u_user_id=request.session['u_name'])
@@ -70,7 +110,7 @@ def new_invoice(request):
 
     else:
         return render(request, 'BPMS/new_invoice.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'New Invoice', 'today':str(datetime.now().date()), 'due_date':str(datetime.now().date()+timedelta(days=30)), 'cid_comb':cid_comb, 'tax':tax})
-    #return render(request, 'BPMS/new_invoice.html', {'user_d':users.objects.get(u_user_id=request.session['u_name'])})
+
 
 
 def invo_view(request):
@@ -103,6 +143,8 @@ def invo_preview(request,invo_num):
     
     """
     return render(request, 'BPMS/invoice_preview.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']),'no_space':no_space, 'str_slice':str_slice,'invo_data':invo_data})
+
+
 
 def dashboard(request):
     return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Dashboard'})

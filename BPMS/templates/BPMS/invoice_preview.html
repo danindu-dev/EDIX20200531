@@ -8,18 +8,18 @@
 	
 	<title>Bill Payment & Management System</title>
 	
-	<link rel='stylesheet' type='text/css' href='{% static 'assets/css/style.css'%}' />
-	<link rel='stylesheet' type='text/css' href='{% static 'assets/css/print.css'%}' media="print" />
+	<link rel='stylesheet' type='text/css' href="{% static 'assets/css/style.css'%}"/>
 
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css'%}">
 
 </head>
 
 <body onload="itemupdate()">
-
-	<div id="page-wrap">
+    <div id="page-wrap-panel">
+        <div id="page-wrap">
 
 		<div id="header">INVOICE</div>
-		
+
 		<div id="identity">
 			<table style="width:100%">
             <tr>
@@ -27,20 +27,20 @@
 				{{invo_data.c_mc_id.mc_address}}<br /><br />
 
 				Phone: {{invo_data.c_mc_id.mc_main_tele}}</td>
-                
+
 
             <td style="border:none" id="logo">
 
-              
+
 
               <img id="image" style="height:80px"  src="{% static 'c_logo/''%}{{user_d.u_mc_id.mc_id}}.jpg" alt="logo" />
             </td>
             </tr>
 			</table>
 		</div>
-		
+
 		<div style="clear:both"></div>
-		
+
 		<div id="customer">
 			<table style="width:100%">
             	<tr>
@@ -55,25 +55,31 @@
                             <td>{{invo_data.c_invoice_num|slice:str_slice}}</td>
                         </tr>
                         <tr>
-        
+
                             <td class="meta-head">Invoice Date</td>
                             <td >{{invo_data.c_invoice_date}}</td>
                         </tr>
+                        {% if invo_data.c_PO_num != "" %}
+                        <tr>
+                            <td class="meta-head">PO Number</td>
+                            <td><div class="due">{{invo_data.c_PO_num }}</div></td>
+                        </tr>
+                        {% endif %}
                         <tr>
                             <td class="meta-head">Payment Due date</td>
                             <td><div class="due">{{invo_data.c_due_date}}</div></td>
                         </tr>
-        
+
                     </table>
                     </td>
                 </tr>
             </table>
 
 
-            
-		
+
+
 		</div>
-		
+
 		<table id="items">
 			<thead>
                 <tr>
@@ -84,10 +90,10 @@
                     <th style="width:15%"></th>
                 </tr>
             </thead>
-		  
+
 		  	<tbody>
-            	
-                
+
+
             </tbody>
 		  	<tfoot>
             	<tr >
@@ -103,13 +109,13 @@
                       <td class="total-value" id="nettotal" align="right"></td>
                   </tr>
                   <tr>
-        
+
                       <td colspan="2" class="blank"> </td>
                       <td colspan="2" class="total-line">{{invo_data.c_tax1_name|upper}} ({{invo_data.c_tax1}}%)</td>
                       <td class="total-value" id="tax" align="right"></td>
                   </tr>
        			  <tr>
-        
+
                       <td colspan="2" class="blank"> </td>
                       <td colspan="2" class="total-line">Deduction</td>
                       <td class="total-value" id="tax" align="right">({{invo_data.c_discount|floatformat:2}})</td>
@@ -120,13 +126,13 @@
                       <td class="total-value" align="right">{{invo_data.c_total_amount|floatformat:2}}</td>
                   </tr>
             </tfoot>
-		  
-		  
-		  
-		
-		  
-		  
-		
+
+
+
+
+
+
+
 		</table>
         <!--<div id="terms">
 		  <h5>Terms</h5>
@@ -140,21 +146,105 @@
                 </tr>
             </table>
         </footer>
-		
-	
+
+
 	</div>
+    </div>
+
+
+    <div id="side-panel">
+        <table style="width:100%;border:hidden;">
+            <tr>
+                <td colspan="3" align="left" style="border:hidden;">
+                    <strong>Payment Status</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="border:hidden;">
+                    Status
+                </td>
+                <td style="border:hidden;">
+                    :
+                </td>
+                <td style="border:hidden;">
+                    {{invo_data.c_status|upper}}
+                </td>
+            </tr>
+            <tr>
+                <td style="border:hidden;">
+                    Received Amount
+                </td>
+                <td style="border:hidden;">
+                    :
+                </td>
+                <td style="border:hidden;">
+                    {% if invo_data.c_received_amount == 0 %}
+                        Prending
+                    {%else%}
+                    {{invo_data.c_received_amount|floatformat:2}}
+                    {%endif%}
+
+                </td>
+            </tr>
+            <tr>
+                <td style="border:hidden;">
+                    Received Date
+                </td>
+                <td style="border:hidden;">
+                    :
+                </td>
+                <td style="border:hidden;">
+                    {% if invo_data.c_received_date|stringformat:'s' == '1111-11-11'%}
+                        Prending
+                    {%else%}
+                    {{invo_data.c_received_date}}
+                    {%endif%}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="border:hidden;">
+                    <hr>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="3" style="border:hidden;">
+
+                    <button class="btn btn-success"><i class="fas fa-hand-holding-usd"></i> Settle</button>
+                    <button class="btn btn-info" onclick="printPageArea('page-wrap-panel')"><i class="fas fa-print"></i> Print</button>
+                    <button class="btn btn-secondary" disabled><i class="fas fa-download"></i> PDF</button>
+                </td>
+
+            </tr>
+
+
+        </table>
+
+
+    </div>
 	
 </body>
 <script type="text/javascript">
+    function printPageArea(areaID){
+        var printContent = document.getElementById(areaID);
+        var WinPrint = window.open('', '', 'width=900,height=650');
+        WinPrint.document.write("<title>Print - {{invo_data.c_invoice_num|slice:str_slice}}</title>");
+        WinPrint.document.write("<link rel='stylesheet' type='text/css' href='{% static 'assets/css/style.css'%}'/>");
+        WinPrint.document.write(printContent.innerHTML);
+        WinPrint.document.close();
+        WinPrint.focus();
+        WinPrint.print();
+        //WinPrint.close();
+    }
 	function itemupdate(){
-		
-		
+
+
 		var tax_str ="{{invo_data.c_tax1}}";
 		var tax_value = parseFloat(tax_str)*0.01;
-		
+
 		var total_amount = 0;
 		var tax_amount = 0;
-		
+
 		var itemstring = '{{invo_data.c_description}}';
 		var amountstring = '{{invo_data.c_detail_amount}}';
 		var taxstring = '{{invo_data.c_tax_string}}';
@@ -164,33 +254,33 @@
 		amountlist = amountlist.filter(Boolean);
 		var taxlist = taxstring.split("?");
 		taxlist = taxlist.filter(Boolean);
-		
-		
-		
+
+
+
 		var tableRef = document.getElementById('items').getElementsByTagName('tbody')[0];
-		
+
 		if (itemlist.length==amountlist.length && amountlist.length==taxlist.length){
 			var i;
 			for (i = 0; i < itemlist.length;i++) {
 			  // Insert a row in the table at row index 0
 			  var item_tax = 0;
 			  var newRow   = tableRef.insertRow(tableRef.rows.length);
-			  
+
 			  // Insert a cell in the row at index 0
 			  var newCell0  = newRow.insertCell(0);
 			  var newCell1  = newRow.insertCell(1);
 			  var newCell2  = newRow.insertCell(2);
 			  var newCell3  = newRow.insertCell(3);
 			  var newCell4  = newRow.insertCell(4);
-			  
+
 			  newRow.className ="item-row";
 			  newCell0.className ="item-name";
               newCell1.className ="description";
               newCell2.className ="total-line";
               newCell3.className ="total-line";
               newCell4.className ="total-line";
-			  
-			  
+
+
 			  newCell0.appendChild(document.createTextNode(i+1));
 			  newCell1.appendChild(document.createTextNode(itemlist[i]));
 			  newCell2.appendChild(document.createTextNode(amountlist[i]));
@@ -201,23 +291,24 @@
 			  }
 			  else{
 				  item_tax = 0
-				  
+
 			  }
 			  newCell3.appendChild(document.createTextNode(item_tax.toFixed(2)));
-			  
+
 			  newCell4.appendChild(document.createTextNode((parseFloat(amountlist[i]) + parseFloat(item_tax)).toFixed(2)));
 			  document.getElementById("tax").innerHTML=tax_amount.toFixed(2);
 				document.getElementById("nettotal").innerHTML=total_amount.toFixed(2);
 			}
 		}
-		else{		
+		else{
 			alert(itemlist.length+""+amountlist.length+""+taxlist.length)
 		}
-		
+
 
 	}
 	</script>
 </html>
+
 {% else %}
 <script>window.location.href = "../"</script>
 {% endif %}

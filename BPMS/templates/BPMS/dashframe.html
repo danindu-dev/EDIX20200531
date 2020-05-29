@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'%}">
   <link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css'%}">
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" {% if page_title == "Edit Invoice" %} onload="loaditems()" {%endif%} >
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
@@ -269,7 +269,11 @@
 <script src="{% static 'dist/js/adminlte.min.js'%}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'dist/js/demo.js'%}"></script>
+
+{% if page_title == "New Invoice" or page_title == "Edit Invoice" %}
 <script src="{% static 'BPMS/New_invoice.js'%}"></script>
+{%endif%}
+
 
 <script src="{% static 'plugins/toastr/toastr.min.js'%}"></script>
 <!-- DataTables -->
@@ -277,6 +281,7 @@
 <script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
 <script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
 <script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+{% if page_title == "View Invoice" %}
 <script>
   $(function () {
     $("#example1").DataTable({
@@ -286,6 +291,7 @@
 
   });
 </script>
+{%endif%}
 </body>
 </html>
 {% else %}
