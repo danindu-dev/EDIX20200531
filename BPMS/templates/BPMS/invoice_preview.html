@@ -178,7 +178,7 @@
                     :
                 </td>
                 <td style="border:hidden;">
-                    {% if invo_data.c_received_amount == 0 %}
+                    {% if invo_data.c_received_amount == 0 and invo_data.c_status != 'revoked'%}
                         Prending
                     {%else%}
                     {{invo_data.c_received_amount|floatformat:2}}
@@ -194,8 +194,11 @@
                     :
                 </td>
                 <td style="border:hidden;">
-                    {% if invo_data.c_received_date|stringformat:'s' == '1111-11-11'%}
+                    {% if invo_data.c_received_date|stringformat:'s' == '1111-11-11' %}
+                        {% if invo_data.c_status == 'revoked'%}Canceled
+                        {%else%}
                         Prending
+                        {%endif%}
                     {%else%}
                     {{invo_data.c_received_date}}
                     {%endif%}
@@ -210,8 +213,8 @@
             <tr>
                 <td colspan="3" style="border:hidden;">
 
-                    <button class="btn btn-success"><i class="fas fa-hand-holding-usd"></i> Settle</button>
-                    <button class="btn btn-info" onclick="printPageArea('page-wrap-panel')"><i class="fas fa-print"></i> Print</button>
+                    <button class="btn btn-success"{% if invo_data.c_status == 'revoked'%}disabled{%endif%}><i class="fas fa-hand-holding-usd"></i> Settle</button>
+                    <button class="btn btn-info" onclick="printPageArea('page-wrap-panel')" {% if invo_data.c_status == 'revoked'%}disabled{%endif%}><i class="fas fa-print"></i> Print</button>
                     <button class="btn btn-secondary" disabled><i class="fas fa-download"></i> PDF</button>
                 </td>
 

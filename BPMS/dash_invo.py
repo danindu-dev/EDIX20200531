@@ -58,6 +58,16 @@ def invo_edit_update(request):
     else:
         return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Dashboard'})
 
+def invo_del(request):
+    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    if (request.method == "POST"):
+        invo_del_data = sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['idfrm_invo'])
+        invo_del_data.c_status = 'revoked'
+        invo_del_data.save()
+        return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Dashboard'})
+    else:
+        return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Dashboard'})
+
 def invo_edit(request, invo_num):
     user_d = users.objects.get(u_user_id=request.session['u_name'])
     invo_data = sub_credit_info.objects.filter(c_invoice_num=user_d.u_mc_id.mc_id + invo_num)
@@ -135,13 +145,6 @@ def invo_preview(request,invo_num):
     no_space = list(filter(None, words))
 
 
-    """invo_edited=[]
-    invo_data = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id.mc_id)
-    for item in invo_data:
-        invo_edited.append(item.c_description.replace("?",","))
-    invo_items = dict(zip(invo_data,invo_edited))
-    
-    """
     return render(request, 'BPMS/invoice_preview.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']),'no_space':no_space, 'str_slice':str_slice,'invo_data':invo_data})
 
 

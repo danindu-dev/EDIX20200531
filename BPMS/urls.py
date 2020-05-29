@@ -15,8 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import lrf
-from . import dash_invo
+from . import lrf, invo_pay, dash_invo
 
 urlpatterns = [
     path('login/', lrf.login),
@@ -32,4 +31,6 @@ urlpatterns = [
     path('invoice/<str:invo_num>', dash_invo.invo_preview, name = 'invo_preview'),
     path('invoice/e/', dash_invo.invo_edit_update, name = 'invo_edit_update'),
     path('invoice/e/<str:invo_num>', dash_invo.invo_edit, name = 'invo_edit'),
+    path('invoice/d/', dash_invo.invo_del, name = 'invo_del'),
+    path('invoice/settle', invo_pay.invo_settle, name = 'invo_settle'),
 ]

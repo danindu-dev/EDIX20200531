@@ -126,9 +126,8 @@
                   <tfoot>
                   	  <tr>
                       	<td colspan="3" align="center">
-                        	<button onclick="additem()" class=" col-sm-2 btn btn-block btn-success">
-                              Add Item
-                              <i class="nav-icon fas fa-plus-circle"></i>
+                        	<button onclick="additem()" class=" col-sm-2 btn btn-block btn-primary">
+                              <i class="nav-icon fas fa-plus-circle"></i> &nbsp; Add Item
                             </button>
                             <input form="invoice_data" type="hidden" name="tax_name" id="tax_name" value="{{tax.tax_name}}">
                               <input form="invoice_data" type="hidden" name="tax_amount" id="tax_amount" value="{{tax.tax_value}}">
@@ -158,8 +157,8 @@
                       <tr>
                         <td colspan="3"align="right">
                         	<input type="hidden" form="invoice_data" name="g_total_to_submit" id="g_total_to_submit">
-                        	<button class="col-sm-2 btn btn-block btn-success" onclick="submitconfirm(confirm('Do you need to issue the invoice?'))">Issue
-                            <i class="nav-icon fas fa-file-signature"></i>
+                        	<button class="col-sm-2 btn btn-block btn-success" onclick="submitconfirm(confirm('Do you need to issue the invoice?'))">
+                                <i class="nav-icon fas fa-file-signature"></i>&nbsp; Issue
                             </button>
                             <textarea style="visibility:hidden; height:1px;" form="invoice_data" id="alltext" name="alltext"></textarea>
   <textarea form="invoice_data" style="visibility:hidden; height:1px;" id="allnum" name="allnum"></textarea>
