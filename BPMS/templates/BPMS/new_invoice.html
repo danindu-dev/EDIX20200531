@@ -176,6 +176,7 @@
         {% if save %}
             <script>
                 window.open("{% url 'invo_preview' save %}", "_blank");
+
                 window.location.href = "{% url 'new_invoice'  %}";
             </script>
 
