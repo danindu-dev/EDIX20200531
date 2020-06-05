@@ -32,5 +32,7 @@ urlpatterns = [
     path('invoice/e/', dash_invo.invo_edit_update, name = 'invo_edit_update'),
     path('invoice/e/<str:invo_num>', dash_invo.invo_edit, name = 'invo_edit'),
     path('invoice/d/', dash_invo.invo_del, name = 'invo_del'),
-    path('invoice/settle', invo_pay.invo_settle, name = 'invo_settle'),
+    path('settle', invo_pay.invo_settle, name = 'invo_settle'),
+    path('settle/conf', invo_pay.invo_settle_conf, name = 'invo_settle_conf'),
+    path('settle/view', invo_pay.invo_settle_view, name = 'invo_settle_view'),
 ]

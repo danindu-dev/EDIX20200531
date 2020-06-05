@@ -6,176 +6,163 @@
             <div class="card card-primary">
            		<div class="card-body">
                 
-                <form action="{% url 'new_invoice_issue' %}" id="invoice_data" method="post">
+                <form action="{% url 'invo_settle'  %}" id="find_frm" method="post">
                 {% csrf_token %}
                   <div class="row " >
-                  	<div class="col-sm-3" >
-                    	<label>Invoice Number</label>
-                        <input type="text" class="form-control" placeholder="Invoice Number" name="invoice_number"  autocomplete="off" value="{% if new_invoice %}{{ new_invoice }}{% endif %}" required>
-                  	</div>
-                    <div class="col-sm-3" >
-                        <label>Invoice Date</label>
-                        <input type="date" class="form-control" name="invoice_date" id="invoice_date"  autocomplete="off" value="{{today}}" required>
-                  	</div>
-                    <div class="col-sm-3" >
-                        <label>Client ID</label>
-                        <select class="form-control" name="cid" id="cidshort" oninput="cid1()">
-                          {% for cid,cid_n in cid_comb.items %}
-                          <option value="{{cid|lower}}">{{cid|upper}}</option>
-                          {% endfor %}
-                        </select>
-                  	</div>
-                    <div class="col-sm-3" >
-                        <label>Client Name</label>
-                        <select class="form-control" id="cidlong" oninput="cid2()">
-                        	{% for cid,cid_n in cid_comb.items %}
-                          	<option value="{{cid|lower}}">{{cid_n}}</option>
-                          	{% endfor %}
-                        </select>
-                  	</div>
-                  </div>
-                  
-                  <div class="row " >
-                  	<div class="col-sm-3" >
-                    	<label>Deduction</label>
-                        <input type="text" id="deduction" class="form-control" name="deduction_value" value="0" oninput="deductionaction()" autocomplete="off" required>
-                  	</div>
-                    <div class="col-sm-3" >
-                    	<label>Client PO Number</label>
-                        <input type="text" id="ponum" class="form-control" name="ponum" placeholder="(optional)"  autocomplete="off">
-                  	</div>
-                    <div class="col-sm-3" >
-                        <label>Invoice Due Date</label>
-                        <input type="date" class="form-control" name="invoice_due_date" id="invoice_due_date"  autocomplete="off" value="{{due_date}}" required>
-                  	</div>
-                    <div class="col-sm-3" >
-                        
-                    </div>
-                    
-
-
-                  </div>
-                  
-                  <div class="row">
-                  	<div class="col-sm-12" >
-                        <table>
-                            <tr>
-                                <td colspan="3">
-                                	<strong>Calculation Fomular</strong>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="color:#666">
-                                	Net Toatal
-                                </td>
-                                <td style="color:#666">
-                                	=
-                                </td>
-                                <td style="color:#666">
-                                	[(Item1 + Item 2 + ...) - Deduction ]
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                	Grand Total
-                                </td>
-                                <td>
-                                	=
-                                </td>
-                                <td>
-                                	[Net Total + Tax Total]
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                  </div>
-                  
-                  <div class="row">
-                  	<div class="col-sm-10" ></div>
                   	<div class="col-sm-2" >
-                    	
-                    
-                    </div>
+
+                  	</div>
+                    <div class="col-sm-6" >
+
+                        <input type="text" class="form-control" name="invoice_num" id="invoice_num" {% if invo_d %} value="{{invo_d.c_invoice_num|slice:str_slice}}"  {%endif%} autocomplete="off" placeholder="Invoice Number" required>
+                        or <a href="{% url 'invoice_view'%}">View Invoice list</a>
+                  	</div>
+                    <div class="col-sm-2" >
+                        <button class="btn btn-block btn-info"><i class="nav-icon fas fa-search"></i>&nbsp;Find Invoice</button>
+                  	</div>
+                    <div class="col-sm-2" >
+
+                  	</div>
                   </div>
+
                   </form>
                 </div>
             </div><!-- /.card -->
           </div> <!-- /.col -->
         </div><!-- /.row -->
        
-        
+        {% if invo_d %}
         <div class="row " >
           <div class="col-sm-12" >
-            <div class="card">
+            <div class="card" id="invo_result" >
               <div class="card-header">
-                <h3 class="card-title">INVOICE</h3>
+                  <h3 class="card-title"><strong>Payment Details</strong></h3>
               </div>
               <!-- /.card-header -->
-              <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap" id="invoice_table">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Item description</th>
-                      <th>Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    
-                  </tbody>
-                  <tfoot>
-                  	  <tr>
-                      	<td colspan="3" align="center">
-                        	<button onclick="additem()" class=" col-sm-2 btn btn-block btn-success">
-                              Add Item
-                              <i class="nav-icon fas fa-plus-circle"></i>
-                            </button>
-                            <input form="invoice_data" type="hidden" name="tax_name" id="tax_name" value="{{tax.tax_name}}">
-                              <input form="invoice_data" type="hidden" name="tax_amount" id="tax_amount" value="{{tax.tax_value}}">
-                              <input type="hidden" id="tax_defaul" value="{% if tax.tax_default == 1 %}add{%endif%}">
-                        </td>
-                      <tr>
-                  	  <tr id="hdtr2" style="visibility:collapse">
-                        <td colspan="2" align="right">Total</td>
-                        <td  id="total"align="right" style="border-top: solid;border-color: #bfc1c3;border-width: thin;">0.00</td>
-                      </tr>
-                      <tr id="hdtr1" style="visibility:collapse">
-                        <td colspan="2" align="right"> Deduction </td>
-                        <td  id="deductiontd"align="right" >0.00</td>
-                      </tr>
-                  	  <tr >
-                        <td colspan="2" align="right"> Net Total</td>
-                        <td  id="alltotal"align="right" style="border-top: solid;border-color: #bfc1c3;border-width: thin;">0.00</td>
-                      </tr>
-                      <tr >
-                        <td colspan="2" align="right"> Tax </td>
-                        <td  id="tax_sum"align="right" style="border-top: solid;border-color: #bfc1c3;border-width: thin;">0.00</td>
-                      </tr>
-                      <tr>
-                        <td colspan="2"align="right"><strong>Grand Total</strong></td>
-                        <td id="grand_total"align="right" style="font-weight:bold">0.00</td>
-                      </tr>
-                      <tr>
-                        <td colspan="3"align="right">
-                        	<input type="hidden" form="invoice_data" name="g_total_to_submit" id="g_total_to_submit">
-                        	<button class="col-sm-2 btn btn-block btn-success" onclick="submitconfirm(confirm('Do you need to issue the invoice?'))">Issue
-                            <i class="nav-icon fas fa-file-signature"></i>
-                            </button>
-                            <textarea style="visibility:hidden; height:1px;" form="invoice_data" id="alltext" name="alltext"></textarea>
-  <textarea form="invoice_data" style="visibility:hidden; height:1px;" id="allnum" name="allnum"></textarea>
-  <textarea form="invoice_data" style="visibility:hidden; height:1px;" id="alltax" name="alltax"></textarea>
-                            </td>
-                      </tr>
-                      
-                  </tfoot>
-                </table>
-              </div>
+                <form action="{% url 'invo_settle_conf' %}" method="POST" name="payfrm" id="payfrm">
+                    {% csrf_token %}
+                    <div class="card-body" >
+                      <div class="row">
+                          <div class="col-sm-12">
+                              <table style="width:100%">
+                                  <tr>
+                                      <td>Invoice Number</td>
+                                      <td>:</td>
+                                      <td>{{invo_d.c_invoice_num|slice:str_slice}}
+                                        <input type="hidden" name="invo_num_conf" value="{{invo_d.c_invoice_num|slice:str_slice}}">
+                                      </td>
+                                      <td>Invoice Date</td>
+                                      <td>:</td>
+                                      <td>{{invo_d.c_invoice_date}}</td>
+                                  </tr>
+                                  <tr>
+                                      <td>Client ID</td>
+                                      <td>:</td>
+                                      <td>{{invo_d.sub_client_id.sub_client_id|slice:str_slice|upper}}</td>
+                                      <td>Client Name</td>
+                                      <td>:</td>
+                                      <td>{{invo_d.sub_client_id.sub_client_name}}</td>
+                                  </tr>
+                                  <tr>
+                                      <td>Description</td>
+                                      <td>:</td>
+                                      <td colspan="4">{{invo_d.c_description|slice:':-2'}}</td>
+
+                                  </tr>
+                                  <tr>
+                                      <td>Total</td>
+                                      <td>:</td>
+                                      <td>{{total|floatformat:2}}</td>
+                                      <td colspan="3"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>{{invo_d.c_tax1_name}} {{invo_d.c_tax1}}%</td>
+                                      <td>:</td>
+                                      <td>{{tax|floatformat:2}}</td>
+                                      <td colspan="3"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>Deduction</td>
+                                      <td>:</td>
+                                      <td>({{invo_d.c_discount|floatformat:2}})</td>
+                                      <td colspan="3"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>Grand Total</td>
+                                      <td>:</td>
+                                      <td id="g_total">{{invo_d.c_total_amount|floatformat:2}}</td>
+                                      <td colspan="3"></td>
+                                  </tr>
+                              </table>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-4">
+                            <label>Received Date</label>
+                            <input type="date" class="form-control" name="received_date" id="received_date"  autocomplete="off" value="{{today|stringformat:'s'}}" required>
+                          </div>
+                          <div class="col-sm-4">
+                            <label>Received Amount</label>
+                            <input type="text" class="form-control" name="received_amount" id="received_amount"  autocomplete="off" value="{{invo_d.c_total_amount|floatformat:2}}" required>
+                          </div>
+
+                          <div class="col-sm-4">
+                            <label>Remark</label>
+                            <input type="text" class="form-control" name="remark" id="remark"  autocomplete="off">
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-4">
+                            <label>Payment Method</label>
+                            <select class="form-control" id="pay_type" oninput="pay_ty()">
+                                <option value="cash">CASH</option>
+                                {%for bank in bank_data%}
+                                    <option value="bank" label="{{bank.sub_bank_name}} ({{bank.sub_bank_acc}})">{{bank.sub_bank_id|slice:str_slice|upper}}</option>
+                                {%endfor%}
+                            </select>
+                              <input type="hidden" id="bank" name="bank" value="CASH">
+                              <input type="hidden" id="status_s" name="status_s">
+                          </div>
+                          <div class="col-sm-4">
+                            <label>Cheque Number</label>
+                            <input type="text" class="form-control" name="che_num" id="che_num"  autocomplete="off" placeholder="Cheque Number" disabled>
+                          </div>
+
+                          <div class="col-sm-2">
+                              <label>&nbsp;</label>
+                              <button type="button" class="btn btn-block btn-success" onclick="settle_invo(confirm('Do you need to settle the invoice?'))">
+                                  <i class="nav-icon fas fa-donate"></i>&nbsp;
+                                  Settle Invoice
+                              </button>
+                          </div>
+                          <div class="col-sm-2">
+                              <label>&nbsp;</label>
+                              <button type="button" class="btn btn-block btn-danger" onclick="cancl_invo(confirm('Do you need to cancel the invoice? \n NOTE:This will show as a lost'))">
+                                  <i class="nav-icon fas fa-window-close"></i>&nbsp;
+                                  Cancel Invoice
+                              </button>
+                          </div>
+
+                      </div>
+                  </div>
+                </form>
+
               <!-- /.card-body -->
             </div><!-- /.card -->
           </div> <!-- /.col -->
         </div><!-- /.row -->
-        {% if save %}
-		<script>window.location.href = "{% url 'invo_preview' save %}"</script>
+
+
+
+
+        {% endif %}
+        {% if saved %}
+            <script>
+                window.open("{% url 'invo_preview' saved %}", "_blank");
+
+                window.location.href = "{% url 'invo_settle'  %}";
+            </script>
+
         {% endif %}
 {% endblock %}
 

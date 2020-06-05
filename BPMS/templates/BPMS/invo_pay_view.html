@@ -26,9 +26,7 @@
                         <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Amount: activate to sort column ascending">
                             Amount
                         </th>
-                            <th>
-
-                            </th>
+                            {%if user_d.u_level == 'admin'%}<th></th>{%endif%}
                         </tr>
                         </thead>
                         <tbody>
@@ -41,16 +39,11 @@
                             <td>{{obj.sub_client_id.sub_client_name}}</td>
                             <td style="color:{%if obj.c_status == 'open'%}red{%endif%}{%if obj.c_status == 'close'%}green{%endif%}">{{obj.c_status|upper}}</td>
                             <td align="right">{{obj.c_total_amount|floatformat:2}}</td>
+                            {%if user_d.u_level == 'admin'%}
                             <td>
-                                <form action="{% url 'invo_settle'  %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden"  name="invoice_num" id="invoice_num" value="{{obj.c_invoice_num|slice:str_slice}}">
-                                <button  type="submit" class="btn btn-block btn-success btn-sm {%if obj.c_status != 'open'%}disabled{%endif%}"><i class="fas fa-hand-holding-usd"></i>Settle</button>
-                                {%if user_d.u_level == 'admin'%}
                                 <a href="{% url 'invo_edit' obj.c_invoice_num|slice:str_slice%}"><button  type="button"  class="btn btn-block btn-secondary btn-sm" ><i class="fas fa-edit"></i>Edit</button></a>
-                                {%endif%}
-                                </form>
                             </td>
+                            {%endif%}
                         </tr>
                         {%endif%}
                         {% endfor %}

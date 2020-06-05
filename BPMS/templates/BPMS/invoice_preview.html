@@ -178,8 +178,8 @@
                     :
                 </td>
                 <td style="border:hidden;">
-                    {% if invo_data.c_received_amount == 0 and invo_data.c_status != 'revoked'%}
-                        Prending
+                    {% if invo_data.c_received_amount == 0 and invo_data.c_status == 'open'%}
+                        Pending
                     {%else%}
                     {{invo_data.c_received_amount|floatformat:2}}
                     {%endif%}
@@ -195,15 +195,56 @@
                 </td>
                 <td style="border:hidden;">
                     {% if invo_data.c_received_date|stringformat:'s' == '1111-11-11' %}
-                        {% if invo_data.c_status == 'revoked'%}Canceled
+                        {% if invo_data.c_status == 'revoked'%}Revoked
                         {%else%}
-                        Prending
+                        Pending
                         {%endif%}
                     {%else%}
                     {{invo_data.c_received_date}}
                     {%endif%}
                 </td>
             </tr>
+
+
+            {% if invo_data.c_status == 'close' %}
+            <tr>
+                <td style="border:hidden;">
+                    Payment Method
+                </td>
+                <td style="border:hidden;">
+                    :
+                </td>
+                <td style="border:hidden;">
+                    {{invo_data.c_payment_type|upper}}
+                </td>
+            </tr>
+            {% if invo_data.c_payment_type == 'BANK' %}
+            <tr>
+                <td style="border:hidden;">
+                    Bank & Acc
+                </td>
+                <td style="border:hidden;">
+                    :
+                </td>
+                <td style="border:hidden;">
+                    {{invo_data.sub_bank_id.sub_bank_name}}<br>({{invo_data.sub_bank_id.sub_bank_acc}})
+                </td>
+            </tr>
+            {% endif %}
+            {% if invo_data.c_remark != '' %}
+            <tr>
+                <td style="border:hidden;">
+                    Remark
+                </td>
+                <td style="border:hidden;">
+                    :
+                </td>
+                <td style="border:hidden;">
+                    {{invo_data.c_remark}}
+                </td>
+            </tr>
+            {% endif %}
+            {% endif %}
             <tr>
                 <td colspan="3" style="border:hidden;">
                     <hr>
@@ -212,10 +253,15 @@
             </tr>
             <tr>
                 <td colspan="3" style="border:hidden;">
+                    <form action="{% url 'invo_settle'  %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden"  name="invoice_num" id="invoice_num" value="{{invo_data.c_invoice_num|slice:str_slice}}">
+                        <button class="btn btn-success"{% if invo_data.c_status != 'open' %}disabled{%endif%}><i class="fas fa-hand-holding-usd"></i> Settle</button>
+                        <button type="button"  class="btn btn-info" onclick="printPageArea('page-wrap-panel')" {% if invo_data.c_status == 'revoked'%}disabled{%endif%}><i class="fas fa-print"></i> Print</button>
+                        <button type="button"  class="btn btn-secondary" disabled><i class="fas fa-download"></i> PDF</button>
+                    </form>
 
-                    <button class="btn btn-success"{% if invo_data.c_status == 'revoked'%}disabled{%endif%}><i class="fas fa-hand-holding-usd"></i> Settle</button>
-                    <button class="btn btn-info" onclick="printPageArea('page-wrap-panel')" {% if invo_data.c_status == 'revoked'%}disabled{%endif%}><i class="fas fa-print"></i> Print</button>
-                    <button class="btn btn-secondary" disabled><i class="fas fa-download"></i> PDF</button>
+
                 </td>
 
             </tr>
