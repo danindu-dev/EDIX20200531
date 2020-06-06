@@ -206,7 +206,7 @@
             </tr>
 
 
-            {% if invo_data.c_status == 'close' %}
+            {% if invo_data.c_status != 'revoked' and invo_data.c_status != 'cancel' and invo_data.c_received_amount != 0%}
             <tr>
                 <td style="border:hidden;">
                     Payment Method

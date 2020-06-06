@@ -99,33 +99,34 @@
                       <div class="row">
                           <div class="col-sm-4">
                             <label>Received Date</label>
-                            <input type="date" class="form-control" name="received_date" id="received_date"  autocomplete="off" value="{{today|stringformat:'s'}}" required>
+                            <input type="date" class="form-control" name="received_date" id="received_date"  autocomplete="off" value="{% if invo_d.c_received_date|stringformat:'s' != '1111-11-11' %}{{invo_d.c_received_date|stringformat:'s'}}{%else%}{{today|stringformat:'s'}}{%endif%}" required>
                           </div>
                           <div class="col-sm-4">
                             <label>Received Amount</label>
-                            <input type="text" class="form-control" name="received_amount" id="received_amount"  autocomplete="off" value="{{invo_d.c_total_amount|floatformat:2}}" required>
+                            <input type="text" class="form-control" name="received_amount" id="received_amount"  autocomplete="off" value="{% if invo_d.c_received_date|stringformat:'s' != '1111-11-11' %}{{invo_d.c_received_amount|floatformat:2}}{%else%}{{invo_d.c_total_amount|floatformat:2}}{%endif%}" required>
                           </div>
 
                           <div class="col-sm-4">
                             <label>Remark</label>
-                            <input type="text" class="form-control" name="remark" id="remark"  autocomplete="off">
+                            <input type="text" class="form-control" name="remark" id="remark" value="{% if invo_d.c_remark != '' %}{{invo_d.c_remark}}{%endif%}"  autocomplete="off">
                           </div>
                       </div>
                       <div class="row">
                           <div class="col-sm-4">
                             <label>Payment Method</label>
                             <select class="form-control" id="pay_type" oninput="pay_ty()">
-                                <option value="cash">CASH</option>
+                                <option value="cash" {% if invo_d.c_payment_type == 'CASH' %}selected{%endif%}>CASH</option>
                                 {%for bank in bank_data%}
-                                    <option value="bank" label="{{bank.sub_bank_name}} ({{bank.sub_bank_acc}})">{{bank.sub_bank_id|slice:str_slice|upper}}</option>
+                                    <option value="bank" label="{{bank.sub_bank_name}} ({{bank.sub_bank_acc}})" {% if invo_d.sub_bank_id.sub_bank_id ==  bank.sub_bank_id %}selected{%endif%}>{{bank.sub_bank_id|slice:str_slice|upper}}</option>
                                 {%endfor%}
                             </select>
-                              <input type="hidden" id="bank" name="bank" value="CASH">
+
+                              <input type="hidden" id="bank" name="bank" value="{% if invo_d.sub_bank_id.sub_bank_id != '' %}{{invo_d.sub_bank_id.sub_bank_id|slice:str_slice|upper}}{%else%}CASH{%endif%}">
                               <input type="hidden" id="status_s" name="status_s">
                           </div>
                           <div class="col-sm-4">
                             <label>Cheque Number</label>
-                            <input type="text" class="form-control" name="che_num" id="che_num"  autocomplete="off" placeholder="Cheque Number" disabled>
+                            <input type="text" class="form-control" name="che_num" id="che_num" value="{% if invo_d.sub_bank_id.sub_bank_id != '' %}{{invo_d.c_cheque_num}}{%endif%}" autocomplete="off" placeholder="Cheque Number" disabled>
                           </div>
 
                           <div class="col-sm-2">
@@ -137,7 +138,7 @@
                           </div>
                           <div class="col-sm-2">
                               <label>&nbsp;</label>
-                              <button type="button" class="btn btn-block btn-danger" onclick="cancl_invo(confirm('Do you need to cancel the invoice? \n NOTE:This will show as a lost'))">
+                              <button type="button" class="btn btn-block btn-danger" onclick="cancl_invo(confirm('Do you need to cancel the invoice? \n\n NOTE:This will show as a lost'))">
                                   <i class="nav-icon fas fa-window-close"></i>&nbsp;
                                   Cancel Invoice
                               </button>
@@ -151,10 +152,32 @@
             </div><!-- /.card -->
           </div> <!-- /.col -->
         </div><!-- /.row -->
+        {% if invo_d.c_received_amount != 0 and user_d.u_level == 'admin'%}
+        <div class="row " >
+          <div class="col-sm-12" >
+            <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"><strong>Payment Revoke</strong></h3>
+                </div>
+           		<div class="card-body">
+                    <div class="row " >
+                        <div class="col-sm-9" >
+                            'Revoke Payment' will reset the payment details. This action can't undone.
 
+                        </div>
+                        <div class="col-sm-3" >
+                            <button type="button" class="btn btn-block btn-danger" onclick="rvk_invo(confirm('Do you need to revoke the invoice? \n\n WARNING:This action cannot be undone'))">
+                                  <i class="nav-icon fas fa-trash-alt"></i>&nbsp;
+                                  Revoke Payment
+                            </button>
+                        </div>
+                    </div>
 
-
-
+                </div>
+            </div><!-- /.card -->
+          </div> <!-- /.col -->
+        </div><!-- /.row -->
+        {% endif %}
         {% endif %}
         {% if saved %}
             <script>

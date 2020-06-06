@@ -8,7 +8,7 @@ def invo_settle(request):
     user_d = users.objects.get(u_user_id=request.session['u_name'])
     if (request.method == "POST"):
         if (sub_credit_info.objects.filter(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['invoice_num'])):
-            if sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['invoice_num']).c_status == "open":
+            if sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['invoice_num']).c_status == "open" or request.POST.get('e_pay', '0') == '1':
                 mc_id_len = len(user_d.u_mc_id.mc_id)
                 str_slice = str(mc_id_len) + ":"
                 invo_d=sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['invoice_num'])
@@ -41,8 +41,9 @@ def invo_settle_conf(request):
     if (request.method == "POST"):
         if (sub_credit_info.objects.filter(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['invo_num_conf'])):
             pay_update_d = sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['invo_num_conf'])
-            pay_update_d.c_received_date = request.POST['received_date']
+
             if request.POST['status_s'] == "CLOSE":
+                pay_update_d.c_received_date = request.POST['received_date']
                 pay_update_d.c_received_amount = float(request.POST['received_amount'])
                 if (float(pay_update_d.c_total_amount)-float(request.POST['received_amount'])) != 0:
                     pay_update_d.c_status = 'open'
@@ -58,8 +59,18 @@ def invo_settle_conf(request):
                     pay_update_d.c_payment_type = 'BANK'
                     pay_update_d.c_cheque_num = request.POST['che_num']
                     pay_update_d.sub_bank_id = sub_bank.objects.get(sub_bank_id=user_d.u_mc_id.mc_id + request.POST['bank'])
-            else:
+            elif request.POST['status_s'] == "CANCEL":
+                pay_update_d.c_received_date = request.POST['received_date']
                 pay_update_d.c_status = 'cancel'
+            else:
+                pay_update_d.c_received_date = '1111-11-11'
+                pay_update_d.c_received_amount = 0
+                pay_update_d.c_status = 'open'
+                pay_update_d.c_remark = ""
+                pay_update_d.c_payment_type = ''
+                pay_update_d.sub_bank_id = sub_bank.objects.get(sub_bank_id='pending')
+                pay_update_d.c_cheque_num = ''
+
             pay_update_d.save()
             return render(request, 'BPMS/invo_pay.html',{'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'Payment','q': '0', 'saved': str(request.POST['invo_num_conf'])})
         else:
@@ -74,6 +85,8 @@ def invo_settle_view(request):
     invo_data = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id.mc_id)
     for item in invo_data:
         invo_edited.append(item.c_description.replace("?",","))
+        item.c_received_amount = -1*item.c_received_amount
     invo_items = dict(zip(invo_data,invo_edited))
     str_slice=str(mc_id_len)+":"
+
     return render(request, 'BPMS/invo_pay_view.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'View Payments', 'invo_items':invo_items, 'mc_id_len':mc_id_len,'str_slice':str_slice})
