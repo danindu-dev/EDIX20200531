@@ -1,0 +1,95 @@
+{% extends 'BPMS/dashframe.html' %}
+
+{% block content %}
+        <div class="row " >
+          <div class="col-sm-12" >
+              <div class="card ">
+                  <div class="card-header">
+                        <h3 class="card-title"><strong>Main Reports</strong></h3>
+                  </div>
+                    <div class="card-body">
+                        <div class="row " >
+                            <div class="col-sm-12" >
+                                <label>Reports of All Invoices</label>
+                            </div>
+                        </div>
+                        <div class="row " >
+                            <div class="col-sm-5" >
+                                <a href="{% url 'all_job_s' %}">
+                                    <button type="button" class="btn btn-block btn-primary" >
+                                          <i class="nav-icon fas fa-server"></i>&nbsp;
+                                          Summary
+                                    </button>
+                                </a>
+
+                            </div>
+                            <div class="col-sm-5" >
+                                <button type="button" class="btn btn-block btn-primary">
+                                      <i class="nav-icon fas fa-server"></i>&nbsp;
+                                      Details
+                                </button>
+                            </div>
+                            <div class="col-sm-2" >
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row " >
+                            <div class="col-sm-12" >
+                                <label>Reports of Unsettled Invoices</label>
+                            </div>
+                        </div>
+                        <div class="row " >
+                            <div class="col-sm-5" >
+                                <a href="{% url 'unsettled_job_s' %}">
+                                    <button type="button" class="btn btn-block btn-primary" >
+                                          <i class="nav-icon fas fa-server"></i>&nbsp;
+                                          Summary
+                                    </button>
+                                </a>
+
+                            </div>
+                            <div class="col-sm-5" >
+                                <button type="button" class="btn btn-block btn-primary">
+                                      <i class="nav-icon fas fa-server"></i>&nbsp;
+                                      Details
+                                </button>
+                            </div>
+                            <div class="col-sm-2" >
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row " >
+                            <div class="col-sm-12" >
+                                <label>Reports of Settled Invoices</label>
+                            </div>
+                        </div>
+                        <div class="row " >
+                            <div class="col-sm-5" >
+                                <a href="{% url 'settled_job_s' %}">
+                                    <button type="button" class="btn btn-block btn-primary" >
+                                          <i class="nav-icon fas fa-server"></i>&nbsp;
+                                          Summary
+                                    </button>
+                                </a>
+
+                            </div>
+                            <div class="col-sm-5" >
+                                <button type="button" class="btn btn-block btn-primary">
+                                      <i class="nav-icon fas fa-server"></i>&nbsp;
+                                      Details
+                                </button>
+                            </div>
+                            <div class="col-sm-2" >
+                            </div>
+
+                        </div>
+                    </div>
+              </div>
+          </div>
+        </div>
+
+{% endblock %}

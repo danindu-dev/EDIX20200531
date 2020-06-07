@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import lrf, invo_pay, dash_invo
+from . import lrf, invo_pay, dash_invo, rpt
 
 urlpatterns = [
     path('login/', lrf.login),
@@ -35,4 +35,8 @@ urlpatterns = [
     path('settle', invo_pay.invo_settle, name = 'invo_settle'),
     path('settle/conf', invo_pay.invo_settle_conf, name = 'invo_settle_conf'),
     path('settle/view', invo_pay.invo_settle_view, name = 'invo_settle_view'),
+    path('report', rpt.report_dash, name = 'report_dash'),
+    path('report/all_job_s', rpt.all_job_s, name = 'all_job_s'),
+    path('report/unsettled_job_s', rpt.unsettled_job_s, name = 'unsettled_job_s'),
+    path('report/settled_job_s', rpt.settled_job_s, name = 'settled_job_s'),
 ]

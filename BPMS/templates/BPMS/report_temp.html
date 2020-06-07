@@ -1,0 +1,74 @@
+{% extends 'BPMS/dashframe.html' %}
+
+{% block content %}
+        <div class="row " >
+          <div class="col-sm-12" >
+            <div class="card ">
+                <div class="card-header">
+                    <h3 class="card-title"><strong>Report</strong></h3>
+                </div>
+
+                <div class="card-body">
+                    <form action="" method="post" >
+                     {%csrf_token%}
+                    <div class="row " >
+
+                            <div class="col-sm-4" >
+                                <label>From</label>
+                                <input type="date" class="form-control" name="report_from_d" autocomplete="off" value="{{from_date}}" required>
+
+                            </div>
+                            <div class="col-sm-4" >
+                                <label>To</label>
+                                <input type="date" class="form-control" name="report_from_d" autocomplete="off" value="{{today}}" required>
+
+
+                            </div>
+                            <div class="col-sm-4" >
+                                <label>&nbsp;</label>
+                                <button type="submit" class="btn btn-block btn-primary">
+                                      <i class="nav-icon fas fa-poll-h"></i>&nbsp;
+                                      Generate Report
+                                </button>
+
+                            </div>
+
+
+                    </div>
+                    </form>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="row " >
+          <div class="col-sm-12" >
+            <div class="card ">
+                <div class="card-body">
+
+                    <table border="1" style="width:100%">
+                        <tr>
+                            {%for th_item in th%}
+                            <th>{{th_item}}</th>
+                            {%endfor%}
+                        </tr>
+
+
+                        {%for row in td%}
+                        <tr>
+                            {%for td_item in row%}
+                                <td>{{td_item}}</td>
+                            {%endfor%}
+                        </tr>
+                        {%endfor%}
+
+
+
+                    </table>
+
+                </div>
+
+            </div>
+          </div>
+        </div>
+
+{% endblock %}
