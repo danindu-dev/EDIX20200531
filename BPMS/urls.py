@@ -39,4 +39,7 @@ urlpatterns = [
     path('report/all_job_s', rpt.all_job_s, name = 'all_job_s'),
     path('report/unsettled_job_s', rpt.unsettled_job_s, name = 'unsettled_job_s'),
     path('report/settled_job_s', rpt.settled_job_s, name = 'settled_job_s'),
+    path('report/all_job_d', rpt.all_job_d, name = 'all_job_d'),
+    path('report/unsettled_job_d', rpt.unsettled_job_d, name='unsettled_job_d'),
+    path('report/settled_job_d', rpt.settled_job_d, name='settled_job_d'),
 ]

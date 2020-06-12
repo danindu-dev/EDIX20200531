@@ -1,0 +1,87 @@
+{% extends 'BPMS/dashframe.html' %}
+
+{% block content %}
+        <div class="row " >
+          <div class="col-sm-12" >
+            <div class="card ">
+                <div class="card-header">
+                    <h3 class="card-title"><strong>{{report_title}}</strong></h3>
+                </div>
+
+                <div class="card-body">
+                    <form action="" method="post" >
+                     {%csrf_token%}
+                    <div class="row " >
+
+                            <div class="col-sm-4" >
+                                <label>From</label>
+                                <input type="date" class="form-control" name="report_from_d" autocomplete="off" value="{{from_date}}" required>
+
+                            </div>
+                            <div class="col-sm-4" >
+                                <label>To</label>
+                                <input type="date" class="form-control" name="report_to_d" autocomplete="off" value="{{today}}" required>
+
+
+                            </div>
+                            <div class="col-sm-4" >
+                                <label>&nbsp;</label>
+                                <button type="submit" class="btn btn-block btn-primary">
+                                      <i class="nav-icon fas fa-poll-h"></i>&nbsp;
+                                      Generate Report
+                                </button>
+
+                            </div>
+
+
+                    </div>
+                    </form>
+                </div>
+            </div>
+          </div>
+        </div>
+        {% if stat == '1' %}
+        <div class="row " >
+          <div class="col-sm-12" >
+            <div class="card ">
+                <div class="card-body">
+
+                    <table border="1" style="width:100%">
+                        <tr style="font-size:13px">
+                            {%for th_item in th%}
+                            <th style="text-align: center">{{th_item}}</th>
+                            {%endfor%}
+                        </tr>
+
+
+                        {%for row in td%}
+
+                            <tr style="font-size:12px">
+                                {%for td_item in row%}
+                                    {% if td_item == '1111-11-11' or td_item == 'nding' %}
+                                    <td></td>
+                                    {%else%}
+                                    <td style="text-align:{%if forloop.counter != 1 and forloop.counter != 2 and forloop.counter != 3 and forloop.counter != 4 and forloop.counter != 5 and forloop.counter != 12 and forloop.counter != 13 and forloop.counter != 14 and forloop.counter != 15%}right{%else%}left{%endif%}">{{td_item}}</td>
+                                    {%endif%}
+                                {%endfor%}
+                            </tr>
+
+                        {%endfor%}
+                        <tr style="border-left: hidden;border-right: hidden;border-bottom: hidden;font-size:13px;">
+                            {%for td_item in tdl%}
+
+                                <td style="text-align:{%if forloop.counter != 1 and forloop.counter != 2 %}right{%else%}center{%endif%};{%if forloop.counter != 1 and forloop.counter != 2%}text-decoration-line: underline;text-decoration-style: double;{%endif%}">{{td_item}}</td>
+                            {%endfor%}
+                        </tr>
+
+
+                    </table>
+
+                </div>
+
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+{% endblock %}
