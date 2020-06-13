@@ -42,4 +42,10 @@ urlpatterns = [
     path('report/all_job_d', rpt.all_job_d, name = 'all_job_d'),
     path('report/unsettled_job_d', rpt.unsettled_job_d, name='unsettled_job_d'),
     path('report/settled_job_d', rpt.settled_job_d, name='settled_job_d'),
+    path('report/CR', rpt.cr, name='cr'),
+    path('report/client_wise_unsettled', rpt.client_wise_unsettled, name='client_wise_unsettled'),
+    path('report/client_wise_settled', rpt.client_wise_settled, name='client_wise_settled'),
+    path('report/bank_summary', rpt.bank_summary, name='bank_summary'),
+    path('report/bank_statement', rpt.bank_statement, name='bank_statement'),
+    path('m/client_view', manage_cb.client_view, name='client_view'),
 ]

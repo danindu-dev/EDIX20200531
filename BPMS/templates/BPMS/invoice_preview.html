@@ -118,12 +118,12 @@
 
                       <td colspan="2" class="blank"> </td>
                       <td colspan="2" class="total-line">Deduction</td>
-                      <td class="total-value" id="tax" align="right">({{invo_data.c_discount|floatformat:2}})</td>
+                      <td class="total-value" id="deduction_inv" align="right"></td>
                   </tr>
                   <tr>
                       <td colspan="2" class="blank"> </td>
                       <td colspan="2" class="total-line balance">Grand Total</td>
-                      <td class="total-value" align="right">{{invo_data.c_total_amount|floatformat:2}}</td>
+                      <td class="total-value" id="grand_inv" align="right"></td>
                   </tr>
             </tfoot>
 
@@ -287,7 +287,8 @@
     }
 	function itemupdate(){
 
-
+        document.getElementById("deduction_inv").innerHTML='({{invo_data.c_discount|floatformat:2}})'.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        document.getElementById("grand_inv").innerHTML='{{invo_data.c_total_amount|floatformat:2}}'.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 		var tax_str ="{{invo_data.c_tax1}}";
 		var tax_value = parseFloat(tax_str)*0.01;
 
@@ -332,7 +333,7 @@
 
 			  newCell0.appendChild(document.createTextNode(i+1));
 			  newCell1.appendChild(document.createTextNode(itemlist[i]));
-			  newCell2.appendChild(document.createTextNode(amountlist[i]));
+			  newCell2.appendChild(document.createTextNode(amountlist[i].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")));
 			  total_amount+=parseFloat(amountlist[i]);
 			  if (taxlist[i]=="add"){
 				  item_tax = parseFloat(amountlist[i])*tax_value;
@@ -342,11 +343,11 @@
 				  item_tax = 0
 
 			  }
-			  newCell3.appendChild(document.createTextNode(item_tax.toFixed(2)));
+			  newCell3.appendChild(document.createTextNode(item_tax.toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")));
 
-			  newCell4.appendChild(document.createTextNode((parseFloat(amountlist[i]) + parseFloat(item_tax)).toFixed(2)));
-			  document.getElementById("tax").innerHTML=tax_amount.toFixed(2);
-				document.getElementById("nettotal").innerHTML=total_amount.toFixed(2);
+			  newCell4.appendChild(document.createTextNode((parseFloat(amountlist[i]) + parseFloat(item_tax)).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")));
+			  document.getElementById("tax").innerHTML=tax_amount.toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+				document.getElementById("nettotal").innerHTML=total_amount.toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 			}
 		}
 		else{

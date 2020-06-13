@@ -51,7 +51,7 @@
                     <div class="col-sm-3" >
                         <label>&nbsp;</label>
                         <button  type="button"  onclick="del_invo(confirm('Do you need to revoke this invoice? (Note: This invoice number will not be able to use again for another invoice.)'))" class="btn btn-block btn-danger">
-                              <i class="nav-icon fas fa-trash-alt"></i>&nbsp; Revoke Invoice
+                              <i class="nav-icon fas fa-trash-alt"></i>&nbsp; Delete Invoice
 
                             </button>
                     </div>
@@ -164,7 +164,7 @@
                         <td colspan="3"align="right">
                         	<input type="hidden" form="invoice_data" name="g_total_to_submit" id="g_total_to_submit" value="{{invo_data.0.c_total_amount}}">
                         	<button  type="button"  class="col-sm-2 btn btn-block btn-success" onclick="submitconfirm(confirm('Do you need to edit the invoice?'))">
-                            <i class="nav-icon fas fa-file-signature"></i>&nbsp; Edit
+                            <i class="nav-icon fas fa-file-signature"></i>&nbsp; Update Invoice
                             </button>
                             <textarea style="visibility:hidden; height:1px;" form="invoice_data" id="alltext" name="alltext">{{invo_data.0.c_description}}</textarea>
   <textarea form="invoice_data" style="visibility:hidden; height:1px;" id="allnum" name="allnum">{{invo_data.0.c_detail_amount}}</textarea>

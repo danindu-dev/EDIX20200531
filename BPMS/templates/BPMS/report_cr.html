@@ -44,8 +44,27 @@
         <div class="row " >
           <div class="col-sm-12" >
             <div class="card ">
-                <div class="card-body">
+                <div class="card-body" id="prt_area">
+                    {%for cr in td%}
+                    <p style="page-break-before: always">
+                    <table>
+                        {%for client,row in cr.items%}
+                        <tr>
+                            <td>
+                                TO:
+                            </td>
+                            <td>
 
+                                        {{client.sub_contact_person}}
+
+
+
+                            </td>
+                        <tr><td></td><td>{{client.sub_client_name}}</td></tr>
+                        <tr><td></td><td>{{client.sub_address}}</td></tr>
+                            {% endfor %}
+                        </tr>
+                    </table><hr>
                     <table border="1" style="width:100%">
                         <tr style="font-size:13px">
                             {%for th_item in th%}
@@ -54,29 +73,29 @@
                         </tr>
 
 
-                        {%for row in td%}
 
-                            <tr style="font-size:12px">
-                                {%for td_item in row%}
-                                    {% if td_item == '1111-11-11' or td_item == 'nding'  or td_item == 'ne'%}
-                                    <td></td>
-                                    {%else%}
-                                    <td style="text-align:{%if forloop.counter != 1 and forloop.counter != 2 and forloop.counter != 3 and forloop.counter != 4 and forloop.counter != 5 and forloop.counter != 12 and forloop.counter != 13 and forloop.counter != 14 and forloop.counter != 15%}right{%else%}left{%endif%}">{{td_item}}</td>
-                                    {%endif%}
+                            {%for client,row in cr.items%}
+                                {%for tr_item in row%}
+
+                                    <tr style="font-size:12px;{% if forloop.last %}text-decoration-line: underline;text-decoration-style: double;border-left: hidden;border-right: hidden;border-bottom: hidden;font-size:13px;{% endif %}">
+                                        {%for td_item in tr_item%}
+                                            {% if td_item == '1111-11-11' or td_item == 'nding' %}
+                                            <td></td>
+                                            {%else%}
+                                            <td style="text-align:{%if forloop.counter != 1 and forloop.counter != 2 and forloop.counter != 3 %}right{%else%}left{%endif%}">{{td_item}}</td>
+                                            {%endif%}
+                                        {%endfor%}
+                                    </tr>
+
+
                                 {%endfor%}
-                            </tr>
-
-                        {%endfor%}
-                        <tr style="border-left: hidden;border-right: hidden;border-bottom: hidden;font-size:13px;">
-                            {%for td_item in tdl%}
-
-                                <td style="text-align:{%if forloop.counter != 1 and forloop.counter != 2 %}right{%else%}center{%endif%};{%if forloop.counter != 1 and forloop.counter != 2%}text-decoration-line: underline;text-decoration-style: double;{%endif%}">{{td_item}}</td>
                             {%endfor%}
-                        </tr>
 
 
                     </table>
-
+                    <hr>
+                    </p>
+                    {%endfor%}
                 </div>
 
             </div>
