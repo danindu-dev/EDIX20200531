@@ -47,5 +47,5 @@ urlpatterns = [
     path('report/client_wise_settled', rpt.client_wise_settled, name='client_wise_settled'),
     path('report/bank_summary', rpt.bank_summary, name='bank_summary'),
     path('report/bank_statement', rpt.bank_statement, name='bank_statement'),
-    path('m/client_view', manage_cb.client_view, name='client_view'),
+    #path('m/client_view', manage_cb.client_view, name='client_view'),
 ]

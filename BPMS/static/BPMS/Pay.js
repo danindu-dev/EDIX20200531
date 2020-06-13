@@ -26,6 +26,12 @@ function rvk_invo(submitconfm){
 	}
 	
 }
+function ckeck_rcd(){
+    setInputFilter(document.getElementById('received_amount'), function(value) {return /^-?\d*[.,]?\d*$/.test(value); });
+    if ((parseFloat(document.getElementById("g_total").innerHTML) < parseFloat(document.getElementById("received_amount").value))){
+        document.getElementById("received_amount").value = document.getElementById("g_total").innerHTML;
+    }
+}
 function settle_invo(submitconfm){
 	if (submitconfm == true) {
 		document.getElementById('status_s').value="CLOSE"
@@ -43,3 +49,26 @@ function settle_invo(submitconfm){
 	}
 	
 }
+
+
+
+function setInputFilter(textbox, inputFilter) {
+  ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+    textbox.addEventListener(event, function() {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      } else {
+        this.value = "";
+      }
+    });
+  });
+}
+
+
+
+

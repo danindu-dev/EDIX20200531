@@ -53,7 +53,7 @@ def invo_edit_update(request):
         invo_data_update.c_discount = float(request.POST.get('deduction_value', '0'))
         invo_data_update.c_PO_num = request.POST.get('ponum', 'Not Available')
         invo_data_update.c_due_date = request.POST['invoice_due_date']
-        if request.POST['g_total_to_submit'] == invo_data_update.c_received_amount :
+        if float(request.POST['g_total_to_submit']) == invo_data_update.c_received_amount :
             invo_data_update.c_status = 'close'
         invo_data_update.save()
         return render(request, 'BPMS/new_invoice.html', {'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Edit Invoice', 'save': str(request.POST['invoice_number'])})
