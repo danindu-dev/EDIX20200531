@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import lrf, invo_pay, dash_invo, rpt
+from . import lrf, invo_pay, dash_invo, rpt, manage_cb, settings_pu
+
+
+
 
 urlpatterns = [
     path('login/', lrf.login),
@@ -47,5 +50,8 @@ urlpatterns = [
     path('report/client_wise_settled', rpt.client_wise_settled, name='client_wise_settled'),
     path('report/bank_summary', rpt.bank_summary, name='bank_summary'),
     path('report/bank_statement', rpt.bank_statement, name='bank_statement'),
-    #path('m/client_view', manage_cb.client_view, name='client_view'),
+    path('m/client_view', manage_cb.client_view, name='client_view'),
+    path('m/bank_view', manage_cb.bank_view, name='bank_view'),
+    path('m/e', manage_cb.d_save, name='d_save'),
+    path('settings/profile', settings_pu.settings_pf, name='settings_pf'),
 ]

@@ -54,8 +54,14 @@ def forapproval(request):
                     user_register.u_pwd = request.POST['pwd_original']
                     user_register.u_level = "admin"
                     user_register.u_acc_status = "pending"
+                    tax_reg = sub_tax()
+                    tax_reg.sub_tax_id=mc_register.mc_id+"NOTAX"
+                    tax_reg.sub_tax_amount=0
+                    tax_reg.sub_tax_default=0
+                    tax_reg.sub_mc_id=mc_register
 
                     mc_register.save()
+                    tax_reg.save()
                     user_register.save()
 
                     return render(request, 'BPMS/login.html', {'message1': "Successfully Registered!", 'message2': "Waiting for the Approval."})
@@ -90,7 +96,7 @@ def login_verify(request):
                     request.session.set_expiry(28800)
                     request.session['u_name'] = request.POST['username']
 
-                    return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']),'page_title':'New Invoice'})
+                    return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']),'page_title':'Dashboard'})
 
             else:
                 return render(request, 'BPMS/login.html', {'error_message': 'Username or Password incorrect!'})

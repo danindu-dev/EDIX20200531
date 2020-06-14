@@ -35,6 +35,7 @@ class sub_clients(models.Model):
     sub_tele = models.CharField(max_length=15)
     sub_contact_person = models.CharField(max_length=100)
     sub_mc_id = models.ForeignKey(mc_details, on_delete=models.CASCADE)
+    status = models.BooleanField()
 
 
 class sub_bank(models.Model):
@@ -44,6 +45,7 @@ class sub_bank(models.Model):
     sub_bank_tel = models.CharField(max_length=15)
     sub_bank_acc = models.CharField(max_length=100)
     sub_mc_id = models.ForeignKey(mc_details, on_delete=models.CASCADE)
+    status = models.BooleanField()
 
 
 class sub_credit_info(models.Model):

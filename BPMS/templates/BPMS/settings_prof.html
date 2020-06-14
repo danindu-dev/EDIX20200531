@@ -1,0 +1,179 @@
+{% extends 'BPMS/dashframe.html' %}
+{% load static %}
+{% block content %}
+        <div class="row " >
+          <div class="col-sm-12" >
+            <div class="card" id="invo_result" >
+              <div class="card-header">
+                  <h3 class="card-title"><strong>Profile Settings</strong></h3>
+              </div>
+              <!-- /.card-header -->
+                <form action="" method="POST" name="itemfrm" id="itemfrm">
+                    {% csrf_token %}
+                    <div class="card-body" >
+
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>Company Name</label>
+                          </div>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="name" id="name"  autocomplete="off" value="{{user_d.u_mc_id.mc_name}}" required>
+                          </div>
+                          <div class="col-sm-3">
+                            <label>Address</label>
+                          </div>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="address" id="address"  autocomplete="off" value="{{user_d.u_mc_id.mc_address}}" required>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label>E-mail</label>
+                          </div>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="email" id="email" value="{{user_d.u_mc_id.mc_email}}"  autocomplete="off" required>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>Contact Number</label>
+                          </div>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="telephone" id="telephone" value="{{user_d.u_mc_id.mc_main_tele}}"  autocomplete="off">
+
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>Contact Person</label>
+                          </div>
+                          <div class="col-sm-7">
+
+                            <input type="text" class="form-control" name="contact_person" id="contact_person" value="{{user_d.u_mc_id.mc_contact_person}}" autocomplete="off" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>Designation</label>
+                          </div>
+                          <div class="col-sm-7">
+
+                            <input type="text" class="form-control" name="Designation" id="Designation" value="{{user_d.u_mc_id.mc_designation}}" autocomplete="off" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>Mobile Number</label>
+                          </div>
+                          <div class="col-sm-7">
+
+                            <input type="text" class="form-control" name="con_person_telephone" id="con_person_telephone" value="{{user_d.u_mc_id.mc_contact_person_mob}}" autocomplete="off" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>Currency</label>
+                          </div>
+                          <div class="col-sm-7">
+
+                            <input type="text" class="form-control" name="currency" id="currency" value="{{user_d.u_mc_id.mc_currency}}" autocomplete="off" placeholder="eg: LKR, USD">
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>Tax ID</label>
+                          </div>
+                          <div class="col-sm-7">
+
+                            <input type="text" class="form-control" name="tax_id" id="tax_id" value="{{tax_details.sub_tax_id|slice:str_slice}}" autocomplete="off" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>Tax Amount(%)</label>
+                          </div>
+                          <div class="col-sm-7">
+
+                            <input type="text" class="form-control" name="tax_amount" id="tax_amount" value="{{tax_details.sub_tax_amount}}" autocomplete="off" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>Tax Default Status</label>
+                          </div>
+                          <div class="col-sm-7">
+                              <div class="form-check">
+                                  <table>
+                                      <tr>
+                                          <td>
+                                              <input type="radio" class="form-check-input" name="tax_default" id="cal" value="1" autocomplete="off" {%if tax_details.sub_tax_default == 1 %}checked{%endif%}>
+                                              <label class="form-check-label" for="cal" >Calculate Always</label>
+                                          </td>
+                                          <td width="30px"></td>
+                                          <td>
+                                              <input type="radio" class="form-check-input" name="tax_default" id="choose" value="0" autocomplete="off" {%if tax_details.sub_tax_default == 0 %}checked{%endif%}>
+                                              <label class="form-check-label" for="choose">Let me choose</label>
+                                          </td>
+                                      </tr>
+                                  </table>
+
+
+                              </div>
+
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>Company Logo</label>
+                          </div>
+                          <div class="col-sm-7">
+                              <img style="border:solid 1px" width="100px" onerror="this.src='{% static 'c_logo/''%}404.jpg'" src="{% static 'c_logo/''%}{{user_d.u_mc_id.mc_id}}.jpg">
+                              <button type="button" style="width:100px" class="btn btn-block btn-info" disabled>
+                                  <i class="nav-icon fas fa-upload"></i>
+                                  Upload
+                              </button>
+                          </div>
+                      </div>
+                      <div class="row">
+
+                          <div class="col-sm-5">
+                              <input type="hidden" name="todo" id="todo" value="">
+
+                              <label>&nbsp;</label>
+
+                              <button type="button" class="btn btn-block btn-success" onclick="item_update(confirm('Do you need to update profile details?'))">
+                                  <i class="nav-icon fas fa-save"></i>&nbsp;
+                                  Update
+                              </button>
+
+
+                          </div>
+
+                      </div>
+                  </div>
+                </form>
+
+              <!-- /.card-body -->
+            </div><!-- /.card -->
+          </div> <!-- /.col -->
+        </div><!-- /.row -->
+
+        <script>
+            function item_update(submitconfm){
+                if (submitconfm == true) {
+                    document.getElementById('todo').value="add";
+                    document.getElementById('itemfrm').submit();
+                }
+            }
+        </script>
+
+        {% if saved %}
+            <script>
+                window.open("{% url 'invo_preview' saved %}", "_blank");
+
+                window.location.href = "{% url 'invo_settle'  %}";
+            </script>
+
+        {% endif %}
+{% endblock %}
+
+

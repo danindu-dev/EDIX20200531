@@ -3,10 +3,245 @@
 {% block content %}
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Blank Page</h1>
+              <div class="col-sm-12" >
+                  <div class="card ">
+                        <div class="card-body">
+                            <div class="row " >
+                                <div class="col-sm-12" >
+                                    <label>Main Functions</label>
+                                </div>
+                            </div>
+                            <div class="row " >
+                                <div class="col-sm-12" >
+                                    <a href="{% url 'new_invoice'%}">
+                                        <button type="button" class="btn btn-block btn-primary" >
+                                              <i class="nav-icon fas fa-copy"></i>&nbsp;
+                                              Issue Invoice
+                                        </button>
+                                    </a><br>
+                                    <a href="{% url 'invo_settle'%}">
+                                        <button type="button" class="btn btn-block btn-primary" >
+                                              <i class="nav-icon fas fa-credit-card"></i>&nbsp;
+                                              Receive Payments
+                                        </button>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                  </div>
+                  <div class="card ">
+                        <div class="card-body">
+                            <div class="row " >
+                                <div class="col-sm-12" >
+                                    <label>View Functions</label>
+                                </div>
+                            </div>
+                            <div class="row " >
+                                <div class="col-sm-12" >
+                                    <a href="{% url 'invoice_view'%}">
+                                        <button type="button" class="btn btn-block btn-warning" >
+                                              <i class="nav-icon fas fa-file-invoice"></i>&nbsp;
+                                              View Invoices
+                                        </button>
+                                    </a><br>
+                                    <a href="{% url 'invo_settle_view'%}">
+                                        <button type="button" class="btn btn-block btn-warning" >
+                                              <i class="nav-icon fas fa-file-invoice-dollar"></i>&nbsp;
+                                              View Payments
+                                        </button>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                  </div>
+                  <div class="card ">
+                        <div class="card-body">
+                            <div class="row " >
+                                <div class="col-sm-12" >
+                                    <label>Manage Functions</label>
+                                </div>
+                            </div>
+                            <div class="row " >
+                                <div class="col-sm-12" >
+                                    <a href="{% url 'client_view' %}">
+                                        <button type="button" class="btn btn-block btn-secondary" >
+                                              <i class="nav-icon fas fa-users"></i>&nbsp;
+                                              Clients
+                                        </button>
+                                    </a><br>
+                                    <a href="{% url 'bank_view' %}">
+                                        <button type="button" class="btn btn-block btn-secondary" >
+                                              <i class="nav-icon fas fa-warehouse"></i>&nbsp;
+                                              Bank Accounts
+                                        </button>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                  </div>
+              </div>
           </div>
           <div class="col-sm-6">
+              <div class="row " >
+              <div class="col-sm-12" >
+                  <div class="card ">
+                      <div class="card-header">
+                            <h3 class="card-title"><strong>Main Reports</strong></h3>
+                      </div>
+                        <div class="card-body">
+                            <div class="row " >
+                                <div class="col-sm-12" >
+                                    <label>Reports of All Invoices</label>
+                                </div>
+                            </div>
+                            <div class="row " >
+                                <div class="col-sm-6" >
+                                    <a href="{% url 'all_job_s' %}">
+                                        <button type="button" class="btn btn-block btn-primary" >
+                                              <i class="nav-icon fas fa-server"></i>&nbsp;
+                                              Summary
+                                        </button>
+                                    </a>
 
+                                </div>
+                                <div class="col-sm-6" >
+                                    <a href="{% url 'all_job_d' %}">
+                                        <button type="button" class="btn btn-block btn-primary">
+                                              <i class="nav-icon fas fa-server"></i>&nbsp;
+                                              Details
+                                        </button>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row " >
+                                <div class="col-sm-12" >
+                                    <label>Reports of Unsettled Invoices</label>
+                                </div>
+                            </div>
+                            <div class="row " >
+                                <div class="col-sm-6" >
+                                    <a href="{% url 'unsettled_job_s' %}">
+                                        <button type="button" class="btn btn-block btn-primary" >
+                                              <i class="nav-icon fas fa-server"></i>&nbsp;
+                                              Summary
+                                        </button>
+                                    </a>
+
+                                </div>
+                                <div class="col-sm-6" >
+                                    <a href="{% url 'unsettled_job_d' %}">
+                                        <button type="button" class="btn btn-block btn-primary">
+                                              <i class="nav-icon fas fa-server"></i>&nbsp;
+                                              Details
+                                        </button>
+                                    </a>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row " >
+                                <div class="col-sm-12" >
+                                    <label>Reports of Settled Invoices</label>
+                                </div>
+                            </div>
+                            <div class="row " >
+                                <div class="col-sm-6" >
+                                    <a href="{% url 'settled_job_s' %}">
+                                        <button type="button" class="btn btn-block btn-primary" >
+                                              <i class="nav-icon fas fa-server"></i>&nbsp;
+                                              Summary
+                                        </button>
+                                    </a>
+
+                                </div>
+                                <div class="col-sm-6" >
+                                    <a href="{% url 'settled_job_d' %}">
+                                        <button type="button" class="btn btn-block btn-primary">
+                                              <i class="nav-icon fas fa-server"></i>&nbsp;
+                                              Details
+                                        </button>
+                                    </a>
+                                </div>
+
+
+                            </div>
+                        </div>
+                  </div>
+                  <div class="card ">
+                      <div class="card-header">
+                            <h3 class="card-title"><strong>Statement Reports</strong></h3>
+                      </div>
+                        <div class="card-body">
+                            <div class="row " >
+                                <div class="col-sm-12" >
+                                <a href="{% url 'cr' %}">
+                                    <button type="button" class="btn btn-block btn-danger">
+                                        <i class="nav-icon fas fa-server"></i>&nbsp;
+                                        Client Notice (Unsettled Payments)
+                                    </button>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+                  <div class="card ">
+                      <div class="card-header">
+                            <h3 class="card-title"><strong>Client-wise Reports</strong></h3>
+                      </div>
+                        <div class="card-body">
+                            <div class="row " >
+                                <div class="col-sm-12" >
+                                <a href="{% url 'client_wise_unsettled' %}">
+                                    <button type="button" class="btn btn-block btn-primary">
+                                        <i class="nav-icon fas fa-server"></i>&nbsp;
+                                        Client-wise - Detailed Report of Unsettled
+                                    </button>
+                                </a>
+                                    <br>
+                                <a href="{% url 'client_wise_settled' %}">
+                                    <button type="button" class="btn btn-block btn-primary">
+                                        <i class="nav-icon fas fa-server"></i>&nbsp;
+                                        Client-wise - Detailed Report of Settled Payments
+                                    </button>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+                  <div class="card ">
+                      <div class="card-header">
+                            <h3 class="card-title"><strong>Bank Reports</strong></h3>
+                      </div>
+                        <div class="card-body">
+                            <div class="row " >
+                                <div class="col-sm-12" >
+                                <a href="{% url 'bank_summary' %}">
+                                    <button type="button" class="btn btn-block btn-primary">
+                                        <i class="nav-icon fas fa-server"></i>&nbsp;
+                                        Summary
+                                    </button>
+                                </a>
+                                    <br>
+                                <a href="{% url 'bank_statement' %}">
+                                    <button type="button" class="btn btn-block btn-primary">
+                                        <i class="nav-icon fas fa-server"></i>&nbsp;
+                                        Details
+                                    </button>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+            </div>
           </div>
         </div>
 {% endblock %}

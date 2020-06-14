@@ -1,0 +1,104 @@
+{% extends 'BPMS/dashframe.html' %}
+
+{% block content %}
+        <div class="row " >
+          <div class="col-sm-12" >
+            <div class="card" id="invo_result" >
+              <div class="card-header">
+                  <h3 class="card-title"><strong>{{frm_header}}</strong></h3>
+              </div>
+              <!-- /.card-header -->
+                <form action="" method="POST" name="itemfrm" id="itemfrm">
+                    {% csrf_token %}
+                    <div class="card-body" >
+
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>{{th_id}}</label>
+                          </div>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="item_id" placeholder="Auto-Generate" id="item_id"  autocomplete="off" value="{{item_data.0.id|slice:str_slice}}" readonly>
+                          </div>
+                          <div class="col-sm-3">
+                            <label>{{th_name}}</label>
+                          </div>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="item_name" id="item_name"  autocomplete="off" value="{{item_data.0.name}}" required>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label>{{th_address}}</label>
+                          </div>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="item_address" id="item_address" value="{{item_data.0.address}}"  autocomplete="off">
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>{{th_tel}}</label>
+                          </div>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="item_tel" id="item_tel" value="{{item_data.0.tele}}"  autocomplete="off">
+
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>{{th_other}}</label>
+                          </div>
+                          <div class="col-sm-7">
+
+                            <input type="text" class="form-control" name="item_other" id="item_other" value="{{item_data.0.other}}" autocomplete="off" >
+                          </div>
+                      </div>
+                      <div class="row">
+
+                          <div class="col-sm-5">
+                              <input type="hidden" name="todo" id="todo" value="">
+                              <input type="hidden" name="item_type" id="item_type" value="{% if page_title == 'Client Details'%}client{%elif page_title == 'Bank Details'%}bank{% elif page_title == 'Add New Client'%}client{%elif page_title == 'Add New Bank Acc'%}bank{%endif%}">
+                              <label>&nbsp;</label>
+
+
+                                  {% if item_data.0.id != ''%}
+                              <button type="button" class="btn btn-block btn-success" onclick="item_update(confirm('Do you need to update{% if page_title == 'Client Details'%} client {%else%} bank {%endif%}details?'))">
+                                  <i class="nav-icon fas fa-save"></i>&nbsp;
+                                  Update
+                              </button>
+                                  {%else%}
+                              <button type="button" class="btn btn-block btn-success" onclick="item_add(confirm('Do you need to add new {% if page_title == 'Client Details'%}client{%elif page_title == 'Bank Details'%}bank{% elif page_title == 'Add New Client'%}client{%elif page_title == 'Add New Bank Acc'%}bank{%endif%} details?'))">
+                                  <i class="nav-icon fas fa-plus-circle"></i>&nbsp;
+                                  Add
+                              </button>
+                                  {%endif%}
+
+                          </div>
+                          {% if item_data.0.id != ''%}
+                          <div class="col-sm-5">
+                              <label>&nbsp;</label>
+                              <button type="button" class="btn btn-block btn-danger" onclick="item_delete(confirm('Do you need to delete{% if page_title == 'Client Details'%} client {%else%} bank {%endif%}details? \n\n WARNING: This action cannot undone.'))">
+                                  <i class="nav-icon fas fa-trash-alt"></i>&nbsp;
+                                  Delete
+                              </button>
+                          </div>
+                          {%endif%}
+                      </div>
+                  </div>
+                </form>
+
+              <!-- /.card-body -->
+            </div><!-- /.card -->
+          </div> <!-- /.col -->
+        </div><!-- /.row -->
+
+
+        {% if saved %}
+            <script>
+                window.open("{% url 'invo_preview' saved %}", "_blank");
+
+                window.location.href = "{% url 'invo_settle'  %}";
+            </script>
+
+        {% endif %}
+{% endblock %}
+
+

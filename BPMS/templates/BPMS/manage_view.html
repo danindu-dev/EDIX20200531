@@ -1,0 +1,80 @@
+{% extends 'BPMS/dashframe.html' %}
+{% load mathfilters %}
+{% block content %}
+        <div class="row " >
+          <div class="col-sm-12" >
+            <div class="card card-primary">
+                <div class="card-body">
+                    <div class="row " >
+                        <div class="col-sm-12" >
+                            <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid" aria-describedby="example1_info">
+                                <thead>
+                                <tr role="row">
+                                <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="{{th_id}}: activate to sort column descending">
+                                    {{th_id}}
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="{{th_name}}: activate to sort column ascending">
+                                    {{th_name}}
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="{{th_address}}: activate to sort column ascending">
+                                    {{th_address}}
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="{{th_tel}}: activate to sort column ascending">
+                                    {{th_tel}}
+                                </th>
+                                 <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="{{th_other}}: activate to sort column ascending">
+                                    {{th_other}}
+                                </th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for obj in item_data %}
+
+                                <tr role="row" class="odd">
+                                    <td tabindex="0" class="sorting_1">{{obj.id|slice:str_slice}} </td>
+                                    <td>{{obj.name}}</td>
+                                    <td>{{obj.address}}</td>
+                                    <td>{{obj.tele}}</td>
+                                    <td >{{obj.other}}</td>
+
+                                    <td>
+                                        <form action="{% url 'd_save' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden"  name="item_id" id="item_id" value="{{obj.id|slice:str_slice}}">
+                                        <input type="hidden"  name="e" id="e" value="{{e}}">
+                                        <button type="submit" class="btn btn-block btn-secondary btn-sm" ><i class="fas fa-edit"></i>Edit</button>
+                                        </form>
+                                    </td>
+
+                                </tr>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row " >
+                        <div class="col-sm-5" >
+
+                        </div>
+                        <div class="col-sm-2" >
+                            <form action="{% url 'd_save' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden"  name="e" id="e" value="add{{e}}">
+                                        <button type="submit" class="btn btn-block btn-primary btn-sm" ><i class="fas fa-plus-circle"></i>&nbsp;Add New</button>
+                            </form>
+                        </div>
+                        <div class="col-sm-5" >
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+          </div>
+        </div>
+
+
+
+{% endblock %}

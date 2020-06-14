@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import *
 from datetime import datetime, timedelta
 from collections import OrderedDict
+from django.db.models import Q
 
 
 
@@ -76,7 +77,7 @@ def invo_edit(request, invo_num):
     if invo_data:
         mc_id_len = len(user_d.u_mc_id.mc_id)
         str_slice = str(mc_id_len) + ":"
-        sub_cid = sub_clients.objects.filter(sub_mc_id=user_d.u_mc_id.mc_id)
+        sub_cid = sub_clients.objects.filter(Q(sub_mc_id=user_d.u_mc_id.mc_id) , Q(status=1))
         cid_list = []
         cid_name = []
         for cid in sub_cid:
@@ -93,7 +94,7 @@ def invo_edit(request, invo_num):
 
 def new_invoice(request):
     user_d = users.objects.get(u_user_id=request.session['u_name'])
-    sub_cid = sub_clients.objects.filter(sub_mc_id=user_d.u_mc_id.mc_id)
+    sub_cid = sub_clients.objects.filter(Q(sub_mc_id=user_d.u_mc_id.mc_id) , Q(status=1))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     cid_list=[]
     cid_name=[]
