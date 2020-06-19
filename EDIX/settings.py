@@ -23,8 +23,12 @@ SECRET_KEY = 'rk1dfg(@t_&)xwaa#-5i2=&4lr*ej0esn!c7i4kv9bv+73rl(4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+is_production = True
 
-ALLOWED_HOSTS = []
+if is_production:
+    ALLOWED_HOSTS = ['159.65.222.47']
+else:
+    ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -75,20 +79,38 @@ WSGI_APPLICATION = 'EDIX.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+if is_production:
+    DATABASES = {
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bpms',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': 'bpms',
+                'USER': 'root',
+                'PASSWORD': 'db@edix',
+                'HOST': 'localhost',
+                'PORT': '3306',
+                'OPTIONS': {
+                    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+                }
+            }
+
     }
-}
+else:
+    DATABASES = {
+
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'bpms',
+            'USER': 'root',
+            'PASSWORD': '',
+            'HOST': 'localhost',
+            'PORT': '3306',
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+            }
+        }
+
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
