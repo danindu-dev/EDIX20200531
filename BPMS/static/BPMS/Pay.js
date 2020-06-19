@@ -35,14 +35,18 @@ function ckeck_rcd(){
 function settle_invo(submitconfm){
 	if (submitconfm == true) {
 		document.getElementById('status_s').value="CLOSE"
-			if (parseFloat(document.getElementById("g_total").innerHTML) != parseFloat(document.getElementById("received_amount").value)){
+			if ((parseFloat(document.getElementById("g_total").innerHTML) != parseFloat(document.getElementById("received_amount").value)) && (parseFloat(document.getElementById("received_amount").value) != 0)){
 				alert("You haven't recieved the total invoice amount. Invoice will keep as a open invoice.");
 			}
 			if (document.getElementById("pay_type").value == "bank" && document.getElementById("che_num").value == ""){
 				document.getElementById("che_num").focus();
 			}
+
+			if (parseFloat(document.getElementById("received_amount").value ) != 0){
+			    document.getElementById('payfrm').submit();
+			}
 			else{
-				document.getElementById('payfrm').submit();
+				alert("Received amount cannot be 0.00");
 			}
 			
 		

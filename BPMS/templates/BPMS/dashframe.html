@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css'%}">
+
+  <link rel="stylesheet" href="{% static 'assets/css/print.css'%}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
@@ -129,13 +131,13 @@
               <li class="nav-item">
                 <a href="{% url 'invo_settle'%}" class="nav-link">
                   <i class="far  nav-icon"></i>
-                  <p>New Payment</p>
+                  <p>Receive Payment</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{% url 'invo_settle_view'%}" class="nav-link">
                   <i class="far  nav-icon"></i>
-                  <p>Check Payments</p>
+                  <p>View Payments</p>
                 </a>
               </li>
             </ul>

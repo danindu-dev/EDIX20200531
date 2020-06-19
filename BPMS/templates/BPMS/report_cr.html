@@ -1,11 +1,31 @@
 {% extends 'BPMS/dashframe.html' %}
-
+{% load static %}
 {% block content %}
         <div class="row " >
           <div class="col-sm-12" >
             <div class="card ">
                 <div class="card-header">
-                    <h3 class="card-title"><strong>{{report_title}}</strong></h3>
+                    <table style="width:100%">
+                        <tr>
+                            <td colspan="1"><h3 class="card-title"><strong>{{report_title}}</strong></h3></td>
+                            <td colspan="1">
+                                <button type="submit" class="btn btn-block btn-secondary" onclick="printPageArea('prt_area')" {% if stat != '1' %}disabled{%endif%}>
+                                      Print
+                                </button>
+
+                            </td>
+                            <td colspan="1">
+                                <button type="submit" class="btn btn-block btn-secondary" disabled>
+
+                                      PDF
+                                </button>
+
+                            </td>
+                        </tr>
+                    </table>
+
+
+
                 </div>
 
                 <div class="card-body">
@@ -36,6 +56,17 @@
 
                     </div>
                     </form>
+                    <div class="row " >
+
+                            <div class="col-sm-8" >
+
+                            </div>
+                            <div class="col-sm-4 form-check" align="right">
+                                <input oninput="preview()" type="checkbox" class="form-check-input" name="print_preview_check" id="print_preview_check" {% if stat != '1' %}disabled{%endif%}>
+                                <label class="form-check-label" for="print_preview_check">Print Preview</label>
+                            </div>
+
+                    </div>
                 </div>
             </div>
           </div>
@@ -46,7 +77,101 @@
             <div class="card ">
                 <div class="card-body" id="prt_area">
                     {%for cr in td%}
+                    <div class="printOnly" id="printOnly"  style="display:none">
                     <p style="page-break-before: always">
+                        {% if report_title == 'Credit Notice' %}
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td ><h3 class="card-title"><strong>{{user_d.u_mc_id.mc_name}}</strong></h3></td>
+                                            </tr>
+                                            <tr>
+                                                <td >{{user_d.u_mc_id.mc_address}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <table>
+                                                        <tr>
+                                                            <td>Phone</td>
+                                                            <td>:</td>
+                                                            <td>{{user_d.u_mc_id.mc_main_tele}}</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <table>
+                                                        <tr>
+                                                            <td>E-Mail</td>
+                                                            <td>:</td>
+                                                            <td>{{user_d.u_mc_id.mc_email}}</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+
+
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td width="101px">
+                                        <img width="100px"
+                                             onerror="this.src='{% static 'c_logo/''%}404.jpg'"
+                                             src="{% static 'c_logo/''%}{{user_d.u_mc_id.mc_id}}.jpg">
+                                    </td>
+
+                                </tr>
+                            <tr>
+                                <td colspan="2" align="center"><strong><u>{{report_title}} FROM {{from_date}} TO {{today}}</u></strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><hr style="display: block;height: 1px;background: transparent;width: 100%;border: none;border-top: solid 1px #000;"></td>
+                            </tr>
+                            </table>
+                        {%else%}
+                            <table style="width:100%; border-top:solid 1px;border-bottom:solid 1px;">
+                                <tr>
+                                    <td style="width:50%; border-right:solid 1px">
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td colspan="3"><h1 class="card-title"><strong>{{user_d.u_mc_id.mc_name}}</strong></h1></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Phone</td>
+                                                <td>:</td>
+                                                <td>{{user_d.u_mc_id.mc_main_tele}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>E-Mail</td>
+                                                <td>:</td>
+                                                <td>{{user_d.u_mc_id.mc_email}}</td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td style="width:50%">
+                                        <table style="width:100%;text-align:right" >
+                                            <tr>
+                                                <td><strong><u>{{report_title}}</strong></u></td>
+                                            </tr>
+                                            <tr>
+                                                <td><u>{{from_date}} TO {{today}}</u></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{rpt_today}}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+
+                                </tr>
+                            </table>
+                        {%endif%}
+                    </div>
+                    <hr>
+
                     <table>
                         {%for client,row in cr.items%}
                         <tr>
@@ -64,8 +189,8 @@
                         <tr><td></td><td>{{client.sub_address}}</td></tr>
                             {% endfor %}
                         </tr>
-                    </table><hr>
-                    <table border="1" style="width:100%">
+                    </table>
+                    <table border="1" style="width:100%;border-collapse: collapse;">
                         <tr style="font-size:13px">
                             {%for th_item in th%}
                             <th style="text-align: center">{{th_item}}</th>
@@ -93,7 +218,36 @@
 
 
                     </table>
-                    <hr>
+                    <hr style="border: none;background-color: #000;color: #ccc;height: 1px;">
+                    <div class="printOnly"   style="display:none">
+
+                        {% if report_title == 'Credit Notice' %}
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        Dear valued customer, please settle the due amount before : {{crd}}<br>
+                                        Thank you for your business.
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td><br><br><br></td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        ......................................<br>
+                                        Accountant,<br>
+                                        {{user_d.u_mc_id.mc_name}}
+                                    </td>
+
+                                </tr>
+
+                            </table>
+                        {%else%}
+
+                        {%endif%}
+                    </div>
                     </p>
                     {%endfor%}
                 </div>
@@ -101,6 +255,37 @@
             </div>
           </div>
         </div>
+
+<script>
+    function printPageArea(areaID){
+        var printContent = document.getElementById(areaID);
+        var WinPrint = window.open('', '', 'width=900,height=650');
+        /*WinPrint.document.write("<title>Print - </title>");
+        WinPrint.document.write("<link rel='stylesheet' type='text/css' href='{% static 'assets/css/style.css'%}'/>");*/
+        WinPrint.document.write(printContent.innerHTML);
+        var script = document.createElement('script');
+        script.src = '{% static 'BPMS/print.js'%}';
+        WinPrint.document.head.appendChild(script);
+        WinPrint.document.close();
+        WinPrint.focus();
+        WinPrint.print();
+        //WinPrint.close();
+    }
+    function preview(){
+        if (document.getElementById('print_preview_check').checked == true){
+            var cols = document.getElementsByClassName('printOnly');
+              for(i = 0; i < cols.length; i++) {
+                cols[i].style.display = "block";
+              }
+        }
+        else{
+            var cols = document.getElementsByClassName('printOnly');
+              for(i = 0; i < cols.length; i++) {
+                cols[i].style.display = "none";
+              }
+        }
+    }
+</script>
         {% endif %}
 
 {% endblock %}

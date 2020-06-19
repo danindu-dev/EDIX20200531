@@ -1,5 +1,6 @@
 {% extends 'BPMS/dashframe.html' %}
 {% load mathfilters %}
+{% load humanize %}
 {% block content %}
         <div class="row " >
           <div class="col-sm-12" >
@@ -26,6 +27,9 @@
                         <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Received Amount: activate to sort column ascending">
                             Received Amount
                         </th>
+                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Due Amount: activate to sort column ascending">
+                            Due Amount
+                        </th>
                             {%if user_d.u_level == 'admin'%}<th></th>{%endif%}
                         </tr>
                         </thead>
@@ -34,15 +38,16 @@
                         {%if obj.c_status != 'revoked' and obj.c_status != 'cancel' and obj.c_received_amount != 0 %}
                         <tr role="row" class="odd">
                             <td tabindex="0" class="sorting_1"><a href="{% url 'invo_preview' obj.c_invoice_num|slice:str_slice%}">{{obj.c_invoice_num|slice:str_slice}}</a> </td>
-                            <td>{{obj.c_received_date}}</td>
+                            <td>{{obj.c_received_date|stringformat:'s'}}</td>
                             <td>{{desc|slice:':-1'}}</td>
                             <td>{{obj.sub_client_id.sub_client_name}}</td>
                             <td style="color:{%if obj.c_status == 'open'%}red{%endif%}{%if obj.c_status == 'close'%}green{%endif%}">{{obj.c_status|upper}}</td>
                             <td align="right">
-                                {{obj.c_received_amount|floatformat:2|slice:'1:'}}
-                                {% if obj.c_total_amount|addition:obj.c_received_amount != 0 %}
-                                <br>(Due:{{ obj.c_total_amount|addition:obj.c_received_amount|floatformat:2 }})
-                                {%endif%}
+                                {{obj.c_received_amount|floatformat:2|intcomma|slice:'1:'}}
+                            </td>
+                            <td>
+                                {{ obj.c_total_amount|addition:obj.c_received_amount|floatformat:2|intcomma }}
+
                             </td>
                             {%if user_d.u_level == 'admin'%}
                             <td>
