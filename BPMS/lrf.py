@@ -96,7 +96,7 @@ def login_verify(request):
                     request.session.set_expiry(28800)
                     request.session['u_name'] = request.POST['username']
 
-                    return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']),'page_title':'Dashboard'})
+                    return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'page_title':'Dashboard'})
 
             else:
                 return render(request, 'BPMS/login.html', {'error_message': 'Username or Password incorrect!'})

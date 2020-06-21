@@ -7,7 +7,7 @@ from django.db.models import Q
 
 
 def settings_pf(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     tax_details = sub_tax.objects.get(sub_mc_id=user_d.u_mc_id)
     mc_id_len = len(user_d.u_mc_id.mc_id)
     str_slice = str(mc_id_len) + ":"
@@ -21,8 +21,7 @@ def settings_pf(request):
         mc_register.mc_designation = request.POST['Designation']
         mc_register.mc_contact_person_mob = request.POST['con_person_telephone']
         mc_register.mc_currency = request.POST['currency']
-
-        tax_reg = sub_tax.objects.get(sub_tax_id=tax_details.sub_tax_id)
+        tax_reg = sub_tax()
         if request.POST['tax_id'] == '':
             tax_reg.sub_tax_id = user_d.u_mc_id.mc_id + "NOTAX"
             tax_reg.sub_tax_amount = 0
@@ -30,11 +29,13 @@ def settings_pf(request):
             tax_reg.sub_tax_id = user_d.u_mc_id.mc_id + str(request.POST['tax_id'])
             tax_reg.sub_tax_amount = float(request.POST['tax_amount'])
         tax_reg.sub_tax_default = int(request.POST.get('tax_default', tax_details.sub_tax_default))
-
+        tax_reg.sub_mc_id = user_d.u_mc_id
         mc_register.save()
         tax_reg.save()
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+        tax_details.delete()
+
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     tax_details = sub_tax.objects.get(sub_mc_id=user_d.u_mc_id)
-    return render(request, 'BPMS/settings_prof.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']),'str_slice':str_slice,'tax_details':tax_details, 'page_title':'Settings'})
+    return render(request, 'BPMS/settings_prof.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'str_slice':str_slice,'tax_details':tax_details, 'page_title':'Settings'})
 
 

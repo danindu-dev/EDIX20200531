@@ -5,7 +5,7 @@ from collections import OrderedDict
 from django.db.models import Q
 
 def client_view(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     item_data = sub_clients.objects.filter(Q(sub_mc_id=user_d.u_mc_id.mc_id) , Q(status=1))
     item_for_view = []
@@ -13,14 +13,14 @@ def client_view(request):
         item_for_view.append({'id':item.sub_client_id,'name':item.sub_client_name, 'address':item.sub_address, 'tele':item.sub_tele, 'other':item.sub_contact_person})
     str_slice = str(mc_id_len) + ":"
     return render(request, 'BPMS/manage_view.html',
-                  {'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'View Clients',
+                  {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title': 'View Clients',
                    'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice, 'th_id':'Client ID',
                    'th_name':'Client Name', 'th_address':'Client Address', 'th_tel' : 'Contact Number',
                    'th_other':'Contact Person', 'e':'1'})
 
 
 def bank_view(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     item_data = sub_bank.objects.filter(Q(sub_mc_id=user_d.u_mc_id.mc_id) , Q(status=1))
     item_for_view = []
@@ -28,13 +28,13 @@ def bank_view(request):
         item_for_view.append({'id':item.sub_bank_id,'name':item.sub_bank_name, 'address':item.sub_bank_address, 'tele':item.sub_bank_tel, 'other':item.sub_bank_acc})
     str_slice = str(mc_id_len) + ":"
     return render(request, 'BPMS/manage_view.html',
-                  {'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'View Banks',
+                  {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title': 'View Banks',
                    'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice, 'th_id':'Bank ID',
                    'th_name':'Bank Name', 'th_address':'Bank Address', 'th_tel' : 'Contact Number',
                    'th_other':'Acc Number', 'e':'2'})
 
 def d_save(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     item_for_view = []
     str_slice=":"
@@ -46,7 +46,7 @@ def d_save(request):
                                   'tele': item.sub_tele, 'other': item.sub_contact_person})
             str_slice = str(mc_id_len) + ":"
             return render(request, 'BPMS/manage_item.html',
-                          {'user_d': users.objects.get(u_user_id=request.session['u_name']),
+                          {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),
                            'page_title': 'Client Details',
                            'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice,
                            'th_id': 'Client ID',
@@ -58,7 +58,7 @@ def d_save(request):
             item_for_view.append({'id':item.sub_bank_id,'name':item.sub_bank_name, 'address':item.sub_bank_address, 'tele':item.sub_bank_tel, 'other':item.sub_bank_acc})
             str_slice = str(mc_id_len) + ":"
             return render(request, 'BPMS/manage_item.html',
-                      {'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'Bank Details',
+                      {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title': 'Bank Details',
                        'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice, 'th_id':'Bank ID',
                    'th_name':'Bank Name', 'th_address':'Bank Address', 'th_tel' : 'Contact Number',
                    'th_other':'Acc Number', 'frm_header':'Bank Details'})
@@ -75,7 +75,7 @@ def d_save(request):
                                   'tele': item.sub_tele, 'other': item.sub_contact_person})
             str_slice = str(mc_id_len) + ":"
             return render(request, 'BPMS/manage_item.html',
-                          {'user_d': users.objects.get(u_user_id=request.session['u_name']),
+                          {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),
                            'page_title': 'Client Details',
                            'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice,
                            'th_id': 'Client ID',
@@ -93,7 +93,7 @@ def d_save(request):
             item_for_view.append({'id':item.sub_bank_id,'name':item.sub_bank_name, 'address':item.sub_bank_address, 'tele':item.sub_bank_tel, 'other':item.sub_bank_acc})
             str_slice = str(mc_id_len) + ":"
             return render(request, 'BPMS/manage_item.html',
-                          {'user_d': users.objects.get(u_user_id=request.session['u_name']),
+                          {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),
                            'page_title': 'Bank Details',
                        'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice, 'th_id':'Bank ID',
                    'th_name':'Bank Name', 'th_address':'Bank Address', 'th_tel' : 'Contact Number',
@@ -103,7 +103,7 @@ def d_save(request):
             item_for_view.append({'id':'','name':'', 'address':'', 'tele':'', 'other':''})
             str_slice = str(mc_id_len) + ":"
             return render(request, 'BPMS/manage_item.html',
-                      {'user_d': users.objects.get(u_user_id=request.session['u_name']),'page_title':'Add New Bank Acc',
+                      {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'page_title':'Add New Bank Acc',
                        'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice, 'th_id':'Bank ID',
                    'th_name':'Bank Name', 'th_address':'Bank Address', 'th_tel' : 'Contact Number',
                    'th_other':'Acc Number', 'frm_header':'Bank Details'})
@@ -112,7 +112,7 @@ def d_save(request):
             item_for_view.append({'id': '', 'name': '', 'address': '', 'tele': '', 'other': ''})
             str_slice = str(mc_id_len) + ":"
             return render(request, 'BPMS/manage_item.html',
-                          {'user_d': users.objects.get(u_user_id=request.session['u_name']),
+                          {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),
                            'page_title': 'Add New Client',
                            'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice,
                            'th_id': 'Client ID',
@@ -153,7 +153,7 @@ def d_save(request):
                 item_for_view.append({'id':item.sub_bank_id,'name':item.sub_bank_name, 'address':item.sub_bank_address, 'tele':item.sub_bank_tel, 'other':item.sub_bank_acc})
                 str_slice = str(mc_id_len) + ":"
                 return render(request, 'BPMS/manage_item.html',
-                              {'user_d': users.objects.get(u_user_id=request.session['u_name']),
+                              {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),
                                'page_title': 'Bank Details',
                            'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice, 'th_id':'Bank ID',
                        'th_name':'Bank Name', 'th_address':'Bank Address', 'th_tel' : 'Contact Number',
@@ -162,7 +162,7 @@ def d_save(request):
                 item_for_view.append({'id': '', 'name': '', 'address': '', 'tele': '', 'other': ''})
                 str_slice = str(mc_id_len) + ":"
                 return render(request, 'BPMS/manage_item.html',
-                              {'user_d': users.objects.get(u_user_id=request.session['u_name']),
+                              {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),
                                'page_title': 'Add New Bank Acc',
                                'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice,
                                'th_id': 'Bank ID',
@@ -206,7 +206,7 @@ def d_save(request):
                      'tele': item.sub_tele, 'other': item.sub_contact_person})
                 str_slice = str(mc_id_len) + ":"
                 return render(request, 'BPMS/manage_item.html',
-                              {'user_d': users.objects.get(u_user_id=request.session['u_name']),
+                              {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),
                                'page_title': 'Client Details',
                                'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice,
                                'th_id': 'Client ID',
@@ -216,7 +216,7 @@ def d_save(request):
                 item_for_view.append({'id': '', 'name': '', 'address': '', 'tele': '', 'other': ''})
                 str_slice = str(mc_id_len) + ":"
                 return render(request, 'BPMS/manage_item.html',
-                              {'user_d': users.objects.get(u_user_id=request.session['u_name']),
+                              {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),
                                'page_title': 'Add New Bank Acc',
                                'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice,
                                'th_id': 'Bank ID',
@@ -228,7 +228,7 @@ def d_save(request):
             item = sub_clients.objects.get(sub_client_id=user_d.u_mc_id.mc_id + request.POST['item_id'])
             item.status = 0
             item.save()
-            user_d = users.objects.get(u_user_id=request.session['u_name'])
+            user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
             mc_id_len = len(user_d.u_mc_id.mc_id)
             item_data = sub_clients.objects.filter(Q(sub_mc_id=user_d.u_mc_id.mc_id), Q(status=1))
             item_for_view = []
@@ -238,7 +238,7 @@ def d_save(request):
                      'tele': item.sub_tele, 'other': item.sub_contact_person})
             str_slice = str(mc_id_len) + ":"
             return render(request, 'BPMS/manage_view.html',
-                          {'user_d': users.objects.get(u_user_id=request.session['u_name']),
+                          {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),
                            'page_title': 'View Clients',
                            'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice,
                            'th_id': 'Client ID',
@@ -250,7 +250,7 @@ def d_save(request):
             item.status = 0
             item.save()
 
-            user_d = users.objects.get(u_user_id=request.session['u_name'])
+            user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
             mc_id_len = len(user_d.u_mc_id.mc_id)
             item_data = sub_bank.objects.filter(Q(sub_mc_id=user_d.u_mc_id.mc_id), Q(status=1))
             item_for_view = []
@@ -260,7 +260,7 @@ def d_save(request):
                      'tele': item.sub_bank_tel, 'other': item.sub_bank_acc})
             str_slice = str(mc_id_len) + ":"
             return render(request, 'BPMS/manage_view.html',
-                          {'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'View Banks',
+                          {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title': 'View Banks',
                            'item_data': item_for_view, 'mc_id_len': mc_id_len, 'str_slice': str_slice,
                            'th_id': 'Bank ID',
                            'th_name': 'Bank Name', 'th_address': 'Bank Address', 'th_tel': 'Contact Number',

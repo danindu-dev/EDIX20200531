@@ -1,11 +1,31 @@
 {% extends 'BPMS/dashframe.html' %}
-
+{% load static %}
 {% block content %}
         <div class="row " >
           <div class="col-sm-12" >
             <div class="card ">
                 <div class="card-header">
-                    <h3 class="card-title"><strong>{{report_title}}</strong></h3>
+                    <table style="width:100%">
+                        <tr>
+                            <td colspan="1"><h3 class="card-title"><strong>{{report_title}}</strong></h3></td>
+                            <td colspan="1">
+                                <button type="submit" class="btn btn-block btn-secondary" onclick="printPageArea('prt_area')" {% if stat != '1' %}disabled{%endif%}>
+                                      Print
+                                </button>
+
+                            </td>
+                            <td colspan="1">
+                                <button type="submit" class="btn btn-block btn-secondary" disabled>
+
+                                      PDF
+                                </button>
+
+                            </td>
+                        </tr>
+                    </table>
+
+
+
                 </div>
 
                 <div class="card-body">
@@ -36,6 +56,17 @@
 
                     </div>
                     </form>
+                    <div class="row " >
+
+                            <div class="col-sm-8" >
+
+                            </div>
+                            <div class="col-sm-4 form-check" align="right">
+                                <input oninput="preview()" type="checkbox" class="form-check-input" name="print_preview_check" id="print_preview_check" {% if stat != '1' %}disabled{%endif%}>
+                                <label class="form-check-label" for="print_preview_check">Print Preview</label>
+                            </div>
+
+                    </div>
                 </div>
             </div>
           </div>
@@ -44,9 +75,9 @@
         <div class="row " >
           <div class="col-sm-12" >
             <div class="card ">
-                <div class="card-body">
+                <div class="card-body" id="prt_area">
 
-                    <table border="1" style="width:100%">
+                    <table border="1" style="width:100%;border-collapse: collapse;">
                         <tr style="font-size:13px">
                             {%for th_item in th%}
                             <th style="text-align: center">{{th_item}}</th>
@@ -82,6 +113,37 @@
             </div>
           </div>
         </div>
+
+<script>
+    function printPageArea(areaID){
+        var printContent = document.getElementById(areaID);
+        var WinPrint = window.open('', '', 'width=900,height=650');
+        /*WinPrint.document.write("<title>Print - </title>");
+        WinPrint.document.write("<link rel='stylesheet' type='text/css' href='{% static 'assets/css/style.css'%}'/>");*/
+        WinPrint.document.write(printContent.innerHTML);
+        var script = document.createElement('script');
+        script.src = '{% static 'BPMS/print.js'%}';
+        WinPrint.document.head.appendChild(script);
+        WinPrint.document.close();
+        WinPrint.focus();
+        WinPrint.print();
+        //WinPrint.close();
+    }
+    function preview(){
+        if (document.getElementById('print_preview_check').checked == true){
+            var cols = document.getElementsByClassName('printOnly');
+              for(i = 0; i < cols.length; i++) {
+                cols[i].style.display = "block";
+              }
+        }
+        else{
+            var cols = document.getElementsByClassName('printOnly');
+              for(i = 0; i < cols.length; i++) {
+                cols[i].style.display = "none";
+              }
+        }
+    }
+</script>
         {% endif %}
 
 {% endblock %}

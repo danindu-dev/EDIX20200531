@@ -6,18 +6,18 @@ from django.db.models import Q
 
 def report_dash(request):
     return render(request, 'BPMS/report.html',
-                  {'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'Reports'})
+                  {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title': 'Reports'})
 
 def all_job_s(request):
 
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     th=[]
     td=[]
     tdl=[]
     stat = '0'
     today = str(datetime.now().date())
-    rpt_today  = str(datetime.now().date())
+    rpt_today = (datetime.now().date())
     from_date = str(datetime.now().date() - timedelta(days=30))
 
     if (request.method == "POST"):
@@ -78,11 +78,11 @@ def all_job_s(request):
 
 
 
-    return render(request, 'BPMS/report_sum.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session['u_name']),'cr':cr,'report_title':'Statement of All Invoices', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
+    return render(request, 'BPMS/report_sum.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'cr':cr,'report_title':'Statement of All Invoices', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
 
 def unsettled_job_s(request):
 
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     th=[]
     td=[]
@@ -90,7 +90,7 @@ def unsettled_job_s(request):
     stat = '0'
     today = str(datetime.now().date())
     from_date = str(datetime.now().date() - timedelta(days=30))
-    rpt_today = str(datetime.now().date())
+    rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
@@ -150,11 +150,11 @@ def unsettled_job_s(request):
 
 
 
-    return render(request, 'BPMS/report_sum.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session['u_name']),'report_title':'Statement of Unsettled Invoices','tdl':tdl,'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
+    return render(request, 'BPMS/report_sum.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'report_title':'Statement of Unsettled Invoices','tdl':tdl,'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
 
 def settled_job_s(request):
 
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     th=[]
     td=[]
@@ -162,7 +162,7 @@ def settled_job_s(request):
     stat = '0'
     today = str(datetime.now().date())
     from_date = str(datetime.now().date() - timedelta(days=30))
-    rpt_today = str(datetime.now().date())
+    rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
@@ -222,11 +222,11 @@ def settled_job_s(request):
 
 
 
-    return render(request, 'BPMS/report_sum.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session['u_name']),'report_title':'Statement of Settled Invoices','tdl':tdl,'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
+    return render(request, 'BPMS/report_sum.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'report_title':'Statement of Settled Invoices','tdl':tdl,'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
 
 def all_job_d(request):
 
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     th=[]
     td=[]
@@ -234,7 +234,7 @@ def all_job_d(request):
     stat = '0'
     today = str(datetime.now().date())
     from_date = str(datetime.now().date() - timedelta(days=30))
-    rpt_today = str(datetime.now().date())
+    rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
@@ -287,11 +287,11 @@ def all_job_d(request):
 
         tdl = [' ',' ',' ',' ',' ',"{:,.2f}".format(t_net_total),"{:,.2f}".format(t_deduction),"{:,.2f}".format(t_tax_total),"{:,.2f}".format(t_grand_total),"{:,.2f}".format(t_rcvd_amount),"{:,.2f}".format(t_grand_total-t_rcvd_amount),' ',' ',' ',' ']
 
-    return render(request, 'BPMS/report_details.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session['u_name']),'report_title':' Detail Statement of All Invoices', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
+    return render(request, 'BPMS/report_details.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'report_title':' Detail Statement of All Invoices', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
 
 def unsettled_job_d(request):
 
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     th=[]
     td=[]
@@ -299,7 +299,7 @@ def unsettled_job_d(request):
     stat = '0'
     today = str(datetime.now().date())
     from_date = str(datetime.now().date() - timedelta(days=30))
-    rpt_today = str(datetime.now().date())
+    rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
@@ -352,11 +352,11 @@ def unsettled_job_d(request):
 
         tdl = [' ',' ',' ',' ',' ',"{:,.2f}".format(t_net_total),"{:,.2f}".format(t_deduction),"{:,.2f}".format(t_tax_total),"{:,.2f}".format(t_grand_total),"{:,.2f}".format(t_rcvd_amount),"{:,.2f}".format(t_grand_total-t_rcvd_amount),' ',' ',' ',' ']
 
-    return render(request, 'BPMS/report_details.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session['u_name']),'report_title':'Detail Statement of Unsettled Invoices', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
+    return render(request, 'BPMS/report_details.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'report_title':'Detail Statement of Unsettled Invoices', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
 
 def settled_job_d(request):
 
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     th=[]
     td=[]
@@ -364,7 +364,7 @@ def settled_job_d(request):
     stat = '0'
     today = str(datetime.now().date())
     from_date = str(datetime.now().date() - timedelta(days=30))
-    rpt_today = str(datetime.now().date())
+    rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
@@ -417,11 +417,11 @@ def settled_job_d(request):
 
         tdl = [' ',' ',' ',' ',' ',"{:,.2f}".format(t_net_total),"{:,.2f}".format(t_deduction),"{:,.2f}".format(t_tax_total),"{:,.2f}".format(t_grand_total),"{:,.2f}".format(t_rcvd_amount),"{:,.2f}".format(t_grand_total-t_rcvd_amount),' ',' ',' ',' ']
 
-    return render(request, 'BPMS/report_details.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session['u_name']),'report_title':'Detail Statement of Settled Invoices', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
+    return render(request, 'BPMS/report_details.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'report_title':'Detail Statement of Settled Invoices', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
 
 def cr(request):
 
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     th=[]
     td=[]
@@ -430,7 +430,7 @@ def cr(request):
     today = str(datetime.now().date())
     from_date = str(datetime.now().date() - timedelta(days=30))
     crd = datetime.now().date() + timedelta(days=15)
-    rpt_today = str(datetime.now().date())
+    rpt_today = datetime.now().date()
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
@@ -488,11 +488,11 @@ def cr(request):
                 td.append(client_temp)
                 '''tdl ='''
 
-    return render(request, 'BPMS/report_cr.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session['u_name']),'crd':crd,'report_title':'Credit Notice', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
+    return render(request, 'BPMS/report_cr.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'crd':crd,'report_title':'Credit Notice', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
 
 def client_wise_unsettled(request):
 
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     th=[]
     td=[]
@@ -500,8 +500,8 @@ def client_wise_unsettled(request):
     stat = '0'
     today = str(datetime.now().date())
     from_date = str(datetime.now().date() - timedelta(days=30))
-    cr = str(datetime.now().date() + timedelta(days=15))
-    rpt_today = str(datetime.now().date())
+    crd = str(datetime.now().date() + timedelta(days=15))
+    rpt_today = datetime.now().date()
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
@@ -561,10 +561,10 @@ def client_wise_unsettled(request):
                 td.append(client_temp)
                 '''tdl ='''
 
-    return render(request, 'BPMS/report_cr.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session['u_name']),'cr':cr,'report_title':'Client-wise - Detailed Report of Unsettled', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
+    return render(request, 'BPMS/report_cr.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'crd':crd,'report_title':'Client-wise - Detailed Report of Unsettled', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
 
 def client_wise_settled(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     th = []
     td = []
@@ -573,7 +573,7 @@ def client_wise_settled(request):
     today = str(datetime.now().date())
     from_date = str(datetime.now().date() - timedelta(days=30))
     crd = str(datetime.now().date() + timedelta(days=15))
-    rpt_today = str(datetime.now().date())
+    rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
@@ -640,11 +640,11 @@ def client_wise_settled(request):
                 '''tdl ='''
 
 
-    return render(request, 'BPMS/report_cr.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session['u_name']),'crd':crd,'report_title':'Client-wise - Detailed Report of Settled', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
+    return render(request, 'BPMS/report_cr.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'crd':crd,'report_title':'Client-wise - Detailed Report of Settled', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
 
 
 def bank_summary(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     th = []
     td = []
@@ -652,7 +652,7 @@ def bank_summary(request):
     stat = '0'
     today = str(datetime.now().date())
     from_date = str(datetime.now().date() - timedelta(days=30))
-    rpt_today = str(datetime.now().date())
+    rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
@@ -681,11 +681,11 @@ def bank_summary(request):
                 td.append(client_temp)
 
 
-    return render(request, 'BPMS/report_bank_s.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session['u_name']),'report_title':'Bank Summary Statement', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
+    return render(request, 'BPMS/report_bank_s.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'report_title':'Bank Summary Statement', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
 
 
 def bank_statement(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     th = []
     td = []
@@ -693,7 +693,7 @@ def bank_statement(request):
     stat = '0'
     today = str(datetime.now().date())
     from_date = str(datetime.now().date() - timedelta(days=30))
-    rpt_today = str(datetime.now().date())
+    rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
@@ -760,11 +760,11 @@ def bank_statement(request):
                 '''tdl ='''
 
 
-    return render(request, 'BPMS/report_bank_s.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session['u_name']),'report_title':'Bank Summary Statement', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
+    return render(request, 'BPMS/report_bank_s.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'report_title':'Bank Summary Statement', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
 
 def temp(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     th = ['a1','a1','a1','a1','a1','a1']
     td = [['b1','b1','b1','b1','b1','b1'], ['c1','c1','c1','c1','c1','c1']]
 
-    return render(request, 'BPMS/report_temp.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']),'th':th, 'td':td , 'page_title':'Reports','today':str(datetime.now().date()), 'from_date':str(datetime.now().date()-timedelta(days=30))})
+    return render(request, 'BPMS/report_temp.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'th':th, 'td':td , 'page_title':'Reports','today':str(datetime.now().date()), 'from_date':str(datetime.now().date()-timedelta(days=30))})

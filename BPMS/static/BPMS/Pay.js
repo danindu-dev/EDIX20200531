@@ -38,16 +38,23 @@ function settle_invo(submitconfm){
 			if ((parseFloat(document.getElementById("g_total").innerHTML) != parseFloat(document.getElementById("received_amount").value)) && (parseFloat(document.getElementById("received_amount").value) != 0)){
 				alert("You haven't recieved the total invoice amount. Invoice will keep as a open invoice.");
 			}
-			if (document.getElementById("pay_type").value == "bank" && document.getElementById("che_num").value == ""){
-				document.getElementById("che_num").focus();
-			}
+
+
 
 			if (parseFloat(document.getElementById("received_amount").value ) != 0){
-			    document.getElementById('payfrm').submit();
+			    if (document.getElementById("pay_type").value == "bank" && document.getElementById("che_num").value == ""){
+                    document.getElementById("che_num").focus();
+                    alert("Please Enter cheque number.");
+                }
+                else{
+                    document.getElementById('payfrm').submit();
+                }
+
 			}
 			else{
 				alert("Received amount cannot be 0.00");
 			}
+
 			
 		
 	}

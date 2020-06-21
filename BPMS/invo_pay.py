@@ -6,7 +6,7 @@ from django.db.models import Q
 
 
 def invo_settle(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     if (request.method == "POST"):
         if (sub_credit_info.objects.filter(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['invoice_num'])):
             if sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['invoice_num']).c_status == "open" or request.POST.get('e_pay', '0') == '1':
@@ -28,17 +28,17 @@ def invo_settle(request):
                         tax += (float(item)*tax_amount)
                     count += 1
                 bank_data = sub_bank.objects.filter(sub_mc_id=user_d.u_mc_id.mc_id)
-                return render(request, 'BPMS/invo_pay.html',{'user_d': users.objects.get(u_user_id=request.session['u_name']),'bank_data' : bank_data,'total':total, 'tax':tax, 'str_slice': str_slice, 'today':str(datetime.now().date()), 'invo_d':invo_d, 'page_title': 'Payment','q': '0'})
+                return render(request, 'BPMS/invo_pay.html',{'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'bank_data' : bank_data,'total':total, 'tax':tax, 'str_slice': str_slice, 'today':str(datetime.now().date()), 'invo_d':invo_d, 'page_title': 'Payment','q': '0'})
             else:
-                return render(request, 'BPMS/invo_pay.html',{'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'Payment','q': '1'})
+                return render(request, 'BPMS/invo_pay.html',{'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title': 'Payment','q': '1'})
         else:
-            return render(request, 'BPMS/invo_pay.html',{'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'Payment','q': '1'})
+            return render(request, 'BPMS/invo_pay.html',{'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title': 'Payment','q': '1'})
     else:
-        return render(request, 'BPMS/invo_pay.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Payment', 'q':'0'})
+        return render(request, 'BPMS/invo_pay.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'Payment', 'q':'0'})
 
 
 def invo_settle_conf(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     if (request.method == "POST"):
         if (sub_credit_info.objects.filter(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['invo_num_conf'])):
             pay_update_d = sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['invo_num_conf'])
@@ -73,14 +73,14 @@ def invo_settle_conf(request):
                 pay_update_d.c_cheque_num = ''
 
             pay_update_d.save()
-            return render(request, 'BPMS/invo_pay.html',{'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'Payment','q': '0', 'saved': str(request.POST['invo_num_conf'])})
+            return render(request, 'BPMS/invo_pay.html',{'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title': 'Payment','q': '0', 'saved': str(request.POST['invo_num_conf'])})
         else:
-            return render(request, 'BPMS/invo_pay.html',{'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'Payment','q': '0'})
+            return render(request, 'BPMS/invo_pay.html',{'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title': 'Payment','q': '0'})
     else:
-        return render(request, 'BPMS/invo_pay.html', {'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'Payment', 'q': '1'})
+        return render(request, 'BPMS/invo_pay.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title': 'Payment', 'q': '1'})
 
 def invo_settle_view(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     invo_edited=[]
     invo_data = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id.mc_id)
@@ -90,4 +90,4 @@ def invo_settle_view(request):
     invo_items = dict(zip(invo_data,invo_edited))
     str_slice=str(mc_id_len)+":"
 
-    return render(request, 'BPMS/invo_pay_view.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'View Payments', 'invo_items':invo_items, 'mc_id_len':mc_id_len,'str_slice':str_slice})
+    return render(request, 'BPMS/invo_pay_view.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'View Payments', 'invo_items':invo_items, 'mc_id_len':mc_id_len,'str_slice':str_slice})

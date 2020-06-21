@@ -10,7 +10,7 @@ from django.db.models import Q
 def issue(request):
     if (request.method == "POST"):
         if request.POST['invoice_number'] and request.POST['invoice_date'] and request.POST['cid'] and request.POST['alltext'] and request.POST['allnum'] and request.POST['alltax'] and request.POST['g_total_to_submit'] and request.POST['invoice_due_date'] :
-            user_d = users.objects.get(u_user_id=request.session['u_name'])
+            user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
             new_invoice_reg = sub_credit_info()
             new_invoice_reg.c_invoice_num= user_d.u_mc_id.mc_id+request.POST['invoice_number']
             new_invoice_reg.c_invoice_date= request.POST['invoice_date']
@@ -33,17 +33,17 @@ def issue(request):
             update_mc = mc_details.objects.get(mc_id=user_d.u_mc_id.mc_id)
             update_mc.mc_lastinvoice = new_invoice_reg.c_invoice_num
             update_mc.save()
-            return render(request, 'BPMS/new_invoice.html', {'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title':'New Invoice', 'save': str(request.POST['invoice_number'])})
+            return render(request, 'BPMS/new_invoice.html', {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'New Invoice', 'save': str(request.POST['invoice_number'])})
         else:
             return render(request, 'BPMS/new_invoice.html',
-                      {'user_d': users.objects.get(u_user_id=request.session['u_name']),'page_title':'New Invoice', 'save': 'Incomplete!'})
+                      {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')),'page_title':'New Invoice', 'save': 'Incomplete!'})
     else:
         return render(request, 'BPMS/new_invoice.html',
-                      {'user_d': users.objects.get(u_user_id=request.session['u_name']),'page_title':'New Invoice', 'save': 'not submited!'})
+                      {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')),'page_title':'New Invoice', 'save': 'not submited!'})
 
 
 def invo_edit_update(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     if (request.method == "POST"):
         invo_data_update = sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['invoice_number'])
         invo_data_update.sub_client_id = sub_clients.objects.get(sub_client_id=str(user_d.u_mc_id.mc_id + request.POST['cid'].upper()))
@@ -57,22 +57,22 @@ def invo_edit_update(request):
         if float(request.POST['g_total_to_submit']) == invo_data_update.c_received_amount :
             invo_data_update.c_status = 'close'
         invo_data_update.save()
-        return render(request, 'BPMS/new_invoice.html', {'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Edit Invoice', 'save': str(request.POST['invoice_number'])})
+        return render(request, 'BPMS/new_invoice.html', {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'Edit Invoice', 'save': str(request.POST['invoice_number'])})
     else:
-        return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Dashboard'})
+        return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'Dashboard'})
 
 def invo_del(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     if (request.method == "POST"):
         invo_del_data = sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id + request.POST['idfrm_invo'])
         invo_del_data.c_status = 'revoked'
         invo_del_data.save()
-        return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Dashboard'})
+        return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'Dashboard'})
     else:
-        return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Dashboard'})
+        return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'Dashboard'})
 
 def invo_edit(request, invo_num):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     invo_data = sub_credit_info.objects.filter(c_invoice_num=user_d.u_mc_id.mc_id + invo_num)
     if invo_data:
         mc_id_len = len(user_d.u_mc_id.mc_id)
@@ -86,14 +86,14 @@ def invo_edit(request, invo_num):
         a = dict(zip(cid_list, cid_name))
         cid_comb = OrderedDict(sorted(a.items()))
         sub_cid = invo_data[0].sub_client_id.sub_client_id[mc_id_len:]
-        return render(request, 'BPMS/edit_invoice.html', {'cid_comb': cid_comb, 'sub_cid': sub_cid,'user_d': users.objects.get(u_user_id=request.session['u_name']),'str_slice': str_slice, 'page_title': 'Edit Invoice','invo_data': invo_data})
+        return render(request, 'BPMS/edit_invoice.html', {'cid_comb': cid_comb, 'sub_cid': sub_cid,'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')),'str_slice': str_slice, 'page_title': 'Edit Invoice','invo_data': invo_data})
     else:
         return render(request, 'BPMS/dash.html',
-                      {'user_d': users.objects.get(u_user_id=request.session['u_name']), 'page_title': 'Dashboard'})
+                      {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title': 'Dashboard'})
 
 
 def new_invoice(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     sub_cid = sub_clients.objects.filter(Q(sub_mc_id=user_d.u_mc_id.mc_id) , Q(status=1))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     cid_list=[]
@@ -116,18 +116,18 @@ def new_invoice(request):
                 to_invoice['invo_new_str'] = "0" + to_invoice['invo_new_str']
 
             return render(request, 'BPMS/new_invoice.html',
-                          {'user_d': users.objects.get(u_user_id=request.session['u_name']),'page_title':'New Invoice', 'new_invoice': to_invoice['invo_new_str'], 'today':str(datetime.now().date()), 'due_date':str(datetime.now().date()+timedelta(days=30)), 'cid_comb':cid_comb, 'tax':tax})
+                          {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')),'page_title':'New Invoice', 'new_invoice': to_invoice['invo_new_str'], 'today':str(datetime.now().date()), 'due_date':str(datetime.now().date()+timedelta(days=30)), 'cid_comb':cid_comb, 'tax':tax})
         except ValueError:
             return render(request, 'BPMS/new_invoice.html',
-                          {'user_d': users.objects.get(u_user_id=request.session['u_name']),'page_title':'New Invoice', 'today':str(datetime.now().date()), 'due_date':str(datetime.now().date()+timedelta(days=30)), 'cid_comb':cid_comb, 'tax':tax})
+                          {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')),'page_title':'New Invoice', 'today':str(datetime.now().date()), 'due_date':str(datetime.now().date()+timedelta(days=30)), 'cid_comb':cid_comb, 'tax':tax})
 
     else:
-        return render(request, 'BPMS/new_invoice.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'New Invoice', 'today':str(datetime.now().date()), 'due_date':str(datetime.now().date()+timedelta(days=30)), 'cid_comb':cid_comb, 'tax':tax})
+        return render(request, 'BPMS/new_invoice.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'New Invoice', 'today':str(datetime.now().date()), 'due_date':str(datetime.now().date()+timedelta(days=30)), 'cid_comb':cid_comb, 'tax':tax})
 
 
 
 def invo_view(request):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     invo_edited=[]
     invo_data = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id.mc_id)
@@ -135,10 +135,10 @@ def invo_view(request):
         invo_edited.append(item.c_description.replace("?",","))
     invo_items = dict(zip(invo_data,invo_edited))
     str_slice=str(mc_id_len)+":"
-    return render(request, 'BPMS/invo_view.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'View Invoice', 'invo_items':invo_items, 'mc_id_len':mc_id_len,'str_slice':str_slice})
+    return render(request, 'BPMS/invo_view.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'View Invoice', 'invo_items':invo_items, 'mc_id_len':mc_id_len,'str_slice':str_slice})
 
 def invo_preview(request,invo_num):
-    user_d = users.objects.get(u_user_id=request.session['u_name'])
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     invo_data = sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id+invo_num)
     mc_id_len = len(user_d.u_mc_id.mc_id)
     str_slice=str(mc_id_len)+":"
@@ -148,12 +148,12 @@ def invo_preview(request,invo_num):
     no_space = list(filter(None, words))
 
 
-    return render(request, 'BPMS/invoice_preview.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']),'no_space':no_space, 'str_slice':str_slice,'invo_data':invo_data})
+    return render(request, 'BPMS/invoice_preview.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'no_space':no_space, 'str_slice':str_slice,'invo_data':invo_data})
 
 
 
 def dashboard(request):
-    return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Dashboard'})
+    return render(request, 'BPMS/dash.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'Dashboard'})
 
 def blank(request):
-    return render(request, 'BPMS/blank_n.html', {'user_d':users.objects.get(u_user_id=request.session['u_name']), 'page_title':'Blank'})
+    return render(request, 'BPMS/blank_n.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'Blank'})
