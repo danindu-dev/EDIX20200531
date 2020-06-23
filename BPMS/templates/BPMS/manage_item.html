@@ -17,7 +17,7 @@
                             <label>{{th_id}}</label>
                           </div>
                           <div class="col-sm-7">
-                            <input type="text" class="form-control" name="item_id" placeholder="Auto-Generate" id="item_id"  autocomplete="off" value="{{item_data.0.id|slice:str_slice}}" readonly>
+                            <input type="text" class="form-control" name="item_id" id="item_id"  autocomplete="off" value="{{item_data.0.id|slice:str_slice}}" {% if item_data.0.id != ''%}readonly{%endif%}>
                           </div>
                           <div class="col-sm-3">
                             <label>{{th_name}}</label>
@@ -89,16 +89,14 @@
             </div><!-- /.card -->
           </div> <!-- /.col -->
         </div><!-- /.row -->
+<script>
+    {% if error_id != '' %}
+        alert("{{error_id}}")
+    {%endif%}
+</script>
 
 
-        {% if saved %}
-            <script>
-                window.open("{% url 'invo_preview' saved %}", "_blank");
 
-                window.location.href = "{% url 'invo_settle'  %}";
-            </script>
-
-        {% endif %}
 {% endblock %}
 
 

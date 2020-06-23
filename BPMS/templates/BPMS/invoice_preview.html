@@ -258,7 +258,7 @@
                         <input type="hidden"  name="invoice_num" id="invoice_num" value="{{invo_data.c_invoice_num|slice:str_slice}}">
                         <button class="btn btn-success"{% if invo_data.c_status != 'open' %}disabled{%endif%}><i class="fas fa-hand-holding-usd"></i> Settle</button>
                         <button type="button"  class="btn btn-info" onclick="printPageArea('page-wrap-panel')" {% if invo_data.c_status == 'revoked'%}disabled{%endif%}><i class="fas fa-print"></i> Print</button>
-                        <button type="button"  class="btn btn-secondary" disabled><i class="fas fa-download"></i> PDF</button>
+
                     </form>
 
 

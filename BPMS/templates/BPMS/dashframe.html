@@ -56,7 +56,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="../../index3.html" class="brand-link">
+    <a href="{% url 'dashboard' %}" class="brand-link">
       <img onerror="this.src='{% static 'c_logo/''%}404.jpg'"
            src="{% static 'c_logo/''%}{{user_d.u_mc_id.mc_id}}.jpg"
            alt="AdminLTE Logo"
@@ -273,6 +273,7 @@
     <script>toastr.error("<strong>Invaild invoice number</strong><br><br> Please use <a href='{% url 'invoice_view'%}'><u>View Invoice list</u></a>")</script>
     {%endif%}
 {%endif%}
+
 {% if page_title == "Client Details" or page_title == "Add New Client" or page_title == "Bank Details" or page_title == "Add New Bank Acc" %}
 <script src="{% static 'BPMS/manage.js'%}"></script>
 {%endif%}
