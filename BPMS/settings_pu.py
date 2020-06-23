@@ -31,8 +31,8 @@ def settings_pf(request):
         tax_reg.sub_tax_default = int(request.POST.get('tax_default', tax_details.sub_tax_default))
         tax_reg.sub_mc_id = user_d.u_mc_id
         mc_register.save()
-        tax_reg.save()
         tax_details.delete()
+        tax_reg.save()
 
     user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     tax_details = sub_tax.objects.get(sub_mc_id=user_d.u_mc_id)
