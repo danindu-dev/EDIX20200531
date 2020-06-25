@@ -11,6 +11,7 @@ def settings_pf(request):
     tax_details = sub_tax.objects.get(sub_mc_id=user_d.u_mc_id)
     mc_id_len = len(user_d.u_mc_id.mc_id)
     str_slice = str(mc_id_len) + ":"
+    error_set = ''
     if (request.method == "POST"):
         mc_register = mc_details.objects.get(mc_id = user_d.u_mc_id.mc_id)
         mc_register.mc_name = request.POST['name']
@@ -36,6 +37,22 @@ def settings_pf(request):
 
     user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     tax_details = sub_tax.objects.get(sub_mc_id=user_d.u_mc_id)
-    return render(request, 'BPMS/settings_prof.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'str_slice':str_slice,'tax_details':tax_details, 'page_title':'Settings'})
+    return render(request, 'BPMS/settings_prof.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'error':error_set,'str_slice':str_slice,'tax_details':tax_details, 'page_title':'Settings'})
 
 
+def settings_pwd(request):
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
+    mc_id_len = len(user_d.u_mc_id.mc_id)
+    str_slice = str(mc_id_len) + ":"
+    error_set = ''
+    if request.method == "POST":
+        if request.POST['o_pwd'] == user_d.u_pwd and request.POST['n_pwd'] == request.POST['rpt_pwd']:
+            user_d.u_pwd = request.POST['n_pwd']
+            user_d.save()
+            error_set="Password Changed Successfully"
+        else:
+            error_set="Password incorrect"
+
+    user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
+    tax_details = sub_tax.objects.get(sub_mc_id=user_d.u_mc_id)
+    return render(request, 'BPMS/settings_prof.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'error':error_set,'str_slice':str_slice,'tax_details':tax_details, 'page_title':'Settings'})

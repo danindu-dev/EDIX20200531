@@ -71,6 +71,40 @@
                 <div class="card-body" id="prt_area">
                     {%for cr in td%}
                     <p style="page-break-before: always">
+                    {% if report_title == "Bank Summary Statement"%}
+                        <div class="printOnly" id="printOnly"  style="display:none;width:100%">
+
+                            <strong>{{user_d.u_mc_id.mc_name}}</strong><br>
+                                {{rpt_today}}<br><br>
+                                <strong>{{report_title}} for the period     of {{from_date}} to {{today}}</strong>
+                            <hr style="display: block;height: 1px;background: transparent;width: 100%;border: none;border-top: solid 1px #aaa;">
+                            <br>
+                        </div>
+                    {%else%}
+                        <div class="printOnly" id="printOnly"  style="display:none;width:100%">
+                            <table style="width:100%">
+                                <tr>
+                                    <td colspan="3"><h1 class="card-title"><strong>{{user_d.u_mc_id.mc_name}}</strong></h1></td>
+                                </tr>
+                                <tr>
+                                    <td>Phone</td>
+                                    <td>:</td>
+                                    <td>{{user_d.u_mc_id.mc_main_tele}}</td>
+                                </tr>
+                                <tr>
+                                    <td>E-Mail</td>
+                                    <td>:</td>
+                                    <td>{{user_d.u_mc_id.mc_email}}</td>
+                                </tr>
+
+                            </table>
+
+                                {{rpt_today}}<br><br>
+                                <strong>{{report_title}} for the period     of {{from_date}} to {{today}}</strong>
+                            <hr style="display: block;height: 1px;background: transparent;width: 100%;border: none;border-top: solid 1px #aaa;">
+                            <br>
+                        </div>
+                    {%endif%}
                     <table>
                         {%for client,row in cr.items%}
                         <tr>

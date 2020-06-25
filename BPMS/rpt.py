@@ -760,7 +760,7 @@ def bank_statement(request):
                 '''tdl ='''
 
 
-    return render(request, 'BPMS/report_bank_s.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'report_title':'Bank Summary Statement', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
+    return render(request, 'BPMS/report_bank_s.html', {'rpt_today':rpt_today, 'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')),'report_title':'Bank Statement', 'tdl':tdl, 'th':th, 'td':td ,'stat':stat, 'page_title':'Reports','today':today, 'from_date':from_date})
 
 def temp(request):
     user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))

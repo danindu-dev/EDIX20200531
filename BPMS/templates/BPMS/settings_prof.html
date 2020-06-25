@@ -157,6 +157,63 @@
           </div> <!-- /.col -->
         </div><!-- /.row -->
 
+
+        <div class="row " >
+          <div class="col-sm-12" >
+            <div class="card" >
+              <div class="card-header">
+                  <h3 class="card-title"><strong>Account Security</strong></h3>
+              </div>
+              <!-- /.card-header -->
+                <form action="{% url 'settings_pdw' %}" method="POST" name="pwdfrm" id="pwdfrm">
+                    {% csrf_token %}
+                    <div class="card-body" >
+
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label>Old Password</label>
+                          </div>
+                          <div class="col-sm-7">
+                            <input type="password" class="form-control" name="o_pwd" id="o_pwd"  autocomplete="off" required>
+                          </div>
+                          <div class="col-sm-3">
+                            <label>New Password</label>
+                          </div>
+                          <div class="col-sm-7">
+                            <input type="password" class="form-control" name="n_pwd" id="n_pwd"  autocomplete="off" required>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label>Re-type Password</label>
+                          </div>
+                          <div class="col-sm-7">
+                            <input type="password" class="form-control" name="rpt_pwd" id="rpt_pwd"  autocomplete="off" required>
+                          </div>
+                      </div>
+
+                      <div class="row">
+
+                          <div class="col-sm-5">
+
+                              <label>&nbsp;</label>
+
+                              <button type="button" class="btn btn-block btn-primary" onclick="pwd_update(confirm('Do you need to change the password?'))">
+                                  <i class="nav-icon fas fa-key"></i>&nbsp;
+                                  Change
+                              </button>
+
+
+                          </div>
+
+                      </div>
+                  </div>
+                </form>
+
+              <!-- /.card-body -->
+            </div><!-- /.card -->
+          </div> <!-- /.col -->
+        </div><!-- /.row -->
+
         <script>
             function item_update(submitconfm){
                 if (submitconfm == true) {
@@ -164,16 +221,23 @@
                     document.getElementById('itemfrm').submit();
                 }
             }
+            function pwd_update(submitconfm){
+                if (submitconfm == true) {
+                    if (document.getElementById('o_pwd').value != "" && document.getElementById('n_pwd').value != "" && document.getElementById('rpt_pwd').value != "" && document.getElementById('n_pwd').value == document.getElementById('rpt_pwd').value){
+                        document.getElementById('pwdfrm').submit();
+                    }
+                    else{
+                        alert('Password incomplete!')
+                    }
+                }
+            }
         </script>
 
-        {% if saved %}
-            <script>
-                window.open("{% url 'invo_preview' saved %}", "_blank");
-
-                window.location.href = "{% url 'invo_settle'  %}";
-            </script>
-
-        {% endif %}
+        <script>
+            {% if error != '' %}
+                alert("{{error}}")
+            {%endif%}
+        </script>
 {% endblock %}
 
 

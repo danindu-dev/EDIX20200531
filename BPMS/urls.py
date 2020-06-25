@@ -54,4 +54,5 @@ urlpatterns = [
     path('m/bank_view', manage_cb.bank_view, name='bank_view'),
     path('m/e', manage_cb.d_save, name='d_save'),
     path('settings/profile', settings_pu.settings_pf, name='settings_pf'),
+    path('settings/profile/pwd', settings_pu.settings_pwd, name='settings_pdw'),
 ]
