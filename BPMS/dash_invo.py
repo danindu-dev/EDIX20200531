@@ -139,7 +139,10 @@ def invo_view(request):
 
 def invo_preview(request,invo_num):
     user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
-    invo_data = sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id+invo_num)
+    if user_d.u_user_id != "ALL":
+        invo_data = sub_credit_info.objects.get(c_invoice_num=user_d.u_mc_id.mc_id+invo_num)
+    else:
+        invo_data = sub_credit_info()
     mc_id_len = len(user_d.u_mc_id.mc_id)
     str_slice=str(mc_id_len)+":"
 
