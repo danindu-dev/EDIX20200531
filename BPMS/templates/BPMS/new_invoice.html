@@ -1,6 +1,7 @@
 {% extends 'BPMS/dashframe.html' %}
 
 {% block content %}
+        {% if not save %}
         <div class="row " >
           <div class="col-sm-12" >
             <div class="card card-primary">
@@ -173,11 +174,42 @@
             </div><!-- /.card -->
           </div> <!-- /.col -->
         </div><!-- /.row -->
-        {% if save %}
-            <script>
-                window.open("{% url 'invo_preview' save %}", "_blank");
 
+
+        {%else%}
+            <div class="row " >
+          <div class="col-sm-12" >
+            <div class="card">
+
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-sm-8" >
+                          <label>Do you need to open saved invoice?</label>
+                      </div>
+                      <div class="col-sm-2" >
+                          <button type="button" class="btn btn-block btn-primary" onclick="open_invo()">Yes</button>
+                      </div>
+                      <div class="col-sm-2" >
+                          <button type="button" class="btn btn-block btn-primary" onclick="donot()">No</button>
+                      </div>
+                  </div>
+
+
+
+
+              </div>
+              <!-- /.card-body -->
+            </div><!-- /.card -->
+          </div> <!-- /.col -->
+        </div>
+            <script>
+                function open_invo(){
+                window.open("{% url 'invo_preview' save %}", "_blank");
                 window.location.href = "{% url 'new_invoice'  %}";
+                }
+                function donot(){
+                window.location.href = "{% url 'new_invoice'  %}";
+                }
             </script>
 
         {% endif %}

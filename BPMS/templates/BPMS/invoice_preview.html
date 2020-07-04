@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 {% load static%}
-{% if user_d.u_mc_id.mc_name != 'ALL' %}
+{% if user_d.u_user_id != 'ALL' %}
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -18,24 +18,40 @@
     <div id="page-wrap-panel">
         <div id="page-wrap">
 
-		<div id="header">INVOICE</div>
 
 		<div id="identity">
-			<table style="width:100%">
+			<table style="width:100%;">
             <tr>
-            <td style="border:none">{{invo_data.c_mc_id.mc_name}}<br />
-				{{invo_data.c_mc_id.mc_address}}<br /><br />
-
-				Phone: {{invo_data.c_mc_id.mc_main_tele}}</td>
-
-
-            <td style="border:none" id="logo">
+                <td style="border: none;"><h2>{{invo_data.c_mc_id.mc_name}}</h2></td>
+    <!-- style="border:none" -->
 
 
 
-              <img id="image" style="height:80px"  src="{% static 'c_logo/''%}{{user_d.u_mc_id.mc_id}}.jpg" alt="logo" />
+            <td   style="border: none;" rowspan="4" align="right">
+              <img id="image" style="height:100px"  src="{% static 'c_logo/''%}{{user_d.u_mc_id.mc_id}}.jpg" alt="logo" />
             </td>
             </tr>
+                <tr>
+                    <td style="border: none;" colspan="1">
+                        {{invo_data.c_mc_id.mc_address}}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: none;" colspan="1">
+                        Phone: {{invo_data.c_mc_id.mc_main_tele}}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: none;" colspan="1">
+                        Email: {{invo_data.c_mc_id.mc_email}}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: none;" colspan="2" align="center">
+                        <strong><u>TAX INVOICE</u></strong>
+                        <hr style="display: block;height: 1px;background: transparent;width: 100%;border: none;border-top: solid 1px #aaa;">
+                    </td>
+                </tr>
 			</table>
 		</div>
 
@@ -44,35 +60,41 @@
 		<div id="customer">
 			<table style="width:100%">
             	<tr>
-                	<td style="border:none" >
-                    {{invo_data.sub_client_id.sub_client_name}}<br />
-                    {{invo_data.sub_client_id.sub_address}}
+                    <td style="border:none" valign="top">Invoice For:</td>
+                	<td style="border:none" align="left" valign="top" id="invo_for">
+
+
                     </td>
                     <td style="border:none">
                     <table id="meta">
                         <tr>
-                            <td class="meta-head">Invoice Number</td>
-                            <td>{{invo_data.c_invoice_num|slice:str_slice}}</td>
+                            <td  style="border:none" class="meta-head">Invoice Number</td>
+                            <td style="border:none">:</td>
+                            <td style="border:none">{{invo_data.c_invoice_num|slice:str_slice}}</td>
                         </tr>
                         <tr>
 
-                            <td class="meta-head">Invoice Date</td>
-                            <td >{{invo_data.c_invoice_date}}</td>
+                            <td style="border:none" class="meta-head">Invoice Date</td>
+                            <td style="border:none">:</td>
+                            <td  style="border:none">{{invo_data.c_invoice_date}}</td>
                         </tr>
                         {% if invo_data.c_PO_num != "" %}
                         <tr>
-                            <td class="meta-head">PO Number</td>
-                            <td><div class="due">{{invo_data.c_PO_num }}</div></td>
+                            <td style="border:none" class="meta-head">PO Number</td>
+                            <td style="border:none">:</td>
+                            <td style="border:none"><div class="due">{{invo_data.c_PO_num }}</div></td>
                         </tr>
                         {% endif %}
                         <tr>
-                            <td class="meta-head">Payment Due date</td>
-                            <td><div class="due">{{invo_data.c_due_date}}</div></td>
+                            <td style="border:none" class="meta-head">Payment Due date</td>
+                            <td style="border:none">:</td>
+                            <td style="border:none"><div class="due">{{invo_data.c_due_date}}</div></td>
                         </tr>
 
                     </table>
                     </td>
                 </tr>
+
             </table>
 
 
@@ -134,14 +156,38 @@
 
 
 		</table>
-        <!--<div id="terms">
-		  <h5>Terms</h5>
-		  NET 30 Days. Finance Charge of 1.5% will be made on unpaid balances after 30 days.
-		</div>-->
+            <table style="width:100%"
+                   <tr>
+                       <td style="height:50px;border:none"></td>
+                       <td style="border:none"></td>
+                   </tr>
+                <tr>
+                    <td style="border:none">
+                        ...............................
+                    </td>
+                    <td style="border:none"></td>
+                </tr>
+                <tr>
+                    <td style="border:none">
+                        Accountant,<br>
+                        {{invo_data.c_mc_id.mc_name}}
+                    </td>
+                    <td style="border:none" align="right">
+                        *Cheques to be drawn in favour of {{invo_data.c_mc_id.mc_name}}
+                    </td>
+                </tr>
+            </table>
+
 		<footer ><br /><br />
-        	<table style="float:right; ">
+        	<table style="float:right;width:100% ">
+                <tr>
+                    <td style="border:none;" colspan="2">
+                        <hr style="display: block;height: 1px;background: transparent;width: 100%;border: none;border-top: solid 1px #aaa;">
+                    </td>
+                </tr>
             	<tr>
-                	<td style="border:none">Powered by EDIX Solutions</td>
+                    <td style="border:none;font-size:8px" id="date_stamp"></td>
+                	<td style="border:none;font-size:8px;" align="right">Powered by EDIX Solutions</td>
                 </tr>
             </table>
         </footer>
@@ -285,7 +331,10 @@
         //WinPrint.close();
     }
 	function itemupdate(){
-
+        var indiaTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"});
+        document.getElementById("date_stamp").innerHTML = (new Date(indiaTime)).toString();
+	    var invo_address = "{{invo_data.sub_client_id.sub_address}}"
+        document.getElementById("invo_for").innerHTML = "<pre style='font-family: Times New Roman, Times, serif;'>{{invo_data.sub_client_id.sub_client_name}}\n"+invo_address.replace(/, |,/gm, ",\n")+"</pre>";
         document.getElementById("deduction_inv").innerHTML='({{invo_data.c_discount|floatformat:2}})'.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         document.getElementById("grand_inv").innerHTML='{{invo_data.c_total_amount|floatformat:2}}'.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 		var tax_str ="{{invo_data.c_tax1}}";
