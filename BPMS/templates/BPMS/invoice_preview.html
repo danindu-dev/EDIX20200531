@@ -15,8 +15,20 @@
 </head>
 
 <body onload="itemupdate()">
-    <div id="page-wrap-panel">
-        <div id="page-wrap">
+    <div id="page-wrap-panel" style="height:100%">
+        <table style="width:100%">
+            <thead>
+                <tr>
+                    <td style="border:none;height:1cm"></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border:none">
+
+
+
+                        <div id="page-wrap">
 
 
 		<div id="identity">
@@ -97,9 +109,6 @@
 
             </table>
 
-
-
-
 		</div>
 
 		<table id="items">
@@ -117,7 +126,7 @@
 
 
             </tbody>
-		  	<tfoot>
+		  	<tfoot style="display: table-row-group">
             	<tr >
                     <td style="border:none"> </td>
                     <td style="border:none">&nbsp;</td>
@@ -156,7 +165,7 @@
 
 
 		</table>
-            <table style="width:100%"
+            <table style="width:100%">
                    <tr>
                        <td style="height:50px;border:none"></td>
                        <td style="border:none"></td>
@@ -178,22 +187,41 @@
                 </tr>
             </table>
 
-		<footer ><br /><br />
-        	<table style="float:right;width:100% ">
-                <tr>
-                    <td style="border:none;" colspan="2">
-                        <hr style="display: block;height: 1px;background: transparent;width: 100%;border: none;border-top: solid 1px #aaa;">
-                    </td>
-                </tr>
-            	<tr>
-                    <td style="border:none;font-size:8px" id="date_stamp"></td>
-                	<td style="border:none;font-size:8px;" align="right">Powered by EDIX Solutions</td>
-                </tr>
-            </table>
-        </footer>
+		<!---->
 
 
 	</div>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td style="border:none;">
+                        <div >
+                            <table style="float:right;width:100% ">
+                                <tr>
+                                    <td style="border:none;" colspan="2">
+                                        <hr style="display: block;height: 1px;background: transparent;width: 100%;border: none;border-top: solid 1px #aaa;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border:none;font-size:8px" id="date_stamp"></td>
+                                    <td style="border:none;font-size:8px;" align="right">Powered by EDIX Solutions</td>
+                                </tr>
+                                <tr>
+                                    <td style="border:none;">
+                                        <br/><br/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
     </div>
 
 

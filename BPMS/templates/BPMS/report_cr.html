@@ -70,50 +70,75 @@
             <div class="card ">
                 <div class="card-body" id="prt_area">
                     {%for cr in td%}
+
                     <div class="printOnly" id="printOnly"  style="display:none">
                     <p style="page-break-before: always">
                         {% if report_title == 'Credit Notice' %}
-                            <table style="width:100%">
+
+
+
+                        <table style="width:100%">
                                 <tr>
-                                    <td>
-                                        <table style="width:100%">
+                                    <td height="25px"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" align="center">
+                                        <img style="width:80%"
+                                             onerror="this.src='{% static 'c_logo/''%}404.jpg'"
+                                             src="{% static 'c_logo/''%}letterhead.png">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:50px">
+                                        <table >
+
                                             <tr>
-                                                <td ><h3 class="card-title"><strong>{{user_d.u_mc_id.mc_name}}</strong></h3></td>
-                                            </tr>
-                                            <tr>
-                                                <td >{{user_d.u_mc_id.mc_address}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <table>
-                                                        <tr>
-                                                            <td>Phone</td>
-                                                            <td>:</td>
-                                                            <td>{{user_d.u_mc_id.mc_main_tele}}</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
+
+                                                <td style="vertical-align:top">TELEPHONE</td>
+                                                <td style="vertical-align:top">:</td>
+                                                <td style="vertical-align:top">0112 833033 / 0772 503040</td>
 
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <table>
-                                                        <tr>
-                                                            <td>E-Mail</td>
-                                                            <td>:</td>
-                                                            <td>{{user_d.u_mc_id.mc_email}}</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
 
+                                                <td style="vertical-align:top">FAX</td>
+                                                <td style="vertical-align:top">:</td>
+                                                <td style="vertical-align:top">0112 833038</td>
 
                                             </tr>
+                                            <tr>
+
+                                                <td style="vertical-align:top">EMAIL</td>
+                                                <td style="vertical-align:top">:</td>
+                                                <td style="vertical-align:top">info@familymovers.lk</td>
+
+                                            </tr>
+                                            <tr>
+
+                                                <td style="vertical-align:top">WEB</td>
+                                                <td style="vertical-align:top">:</td>
+                                                <td style="vertical-align:top">www.familymovers.lk </td>
+
+                                            </tr>
+
                                         </table>
                                     </td>
-                                    <td width="101px">
-                                        <img width="100px"
-                                             onerror="this.src='{% static 'c_logo/''%}404.jpg'"
-                                             src="{% static 'c_logo/''%}{{user_d.u_mc_id.mc_id}}.jpg">
+
+                                    <td style="width:50px;vertical-align:top" >
+                                        <table style="width:100%">
+
+                                            <tr>
+
+                                                <td style="vertical-align:top">ADDRESS</td>
+                                                <td style="vertical-align:top">:</td>
+                                                <td style="vertical-align:top">405B, Old Kottawa Road, Udahamulla, Nugegoda</td>
+
+                                            </tr>
+
+
+
+
+                                        </table>
                                     </td>
 
                                 </tr>
@@ -231,9 +256,18 @@
                                     <td>
                                         ......................................<br>
                                         Accountant,<br>
-                                        {{user_d.u_mc_id.mc_name}}
+                                        {{user_d.u_mc_id.mc_name}}<br><br>
                                     </td>
 
+                                </tr>
+
+                                <tr>
+                                    <td align="center">
+                                        <hr style="display: block;height: 1px;background: transparent;width: 100%;border: none;border-top: solid 1px #aaa;">
+                                        <strong>FAMILY MOVERS (PVT) LTD.</strong><br>
+                                        EXPERTS IN MOVING, PACKING AND STORAGE - SINCE 1989<br><br>
+
+                                    </td>
                                 </tr>
 
                             </table>
@@ -241,7 +275,7 @@
 
                         {%endif%}
                     </div>
-                    </p>
+
                     {%endfor%}
                 </div>
 
@@ -253,9 +287,10 @@
     function printPageArea(areaID){
         var printContent = document.getElementById(areaID);
         var WinPrint = window.open('', '', 'width=900,height=650');
-        /*WinPrint.document.write("<title>Print - </title>");
-        WinPrint.document.write("<link rel='stylesheet' type='text/css' href='{% static 'assets/css/style.css'%}'/>");*/
+        /*WinPrint.document.write("<title>Print - </title>");*/
+
         WinPrint.document.write(printContent.innerHTML);
+        WinPrint.document.write("<link rel='stylesheet' type='text/css' href='{% static 'assets/css/stylecr.css'%}'/>");
         var script = document.createElement('script');
         script.src = '{% static 'BPMS/print.js'%}';
         WinPrint.document.head.appendChild(script);

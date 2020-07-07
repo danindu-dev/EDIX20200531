@@ -4,44 +4,79 @@
 {% block content %}
         <div class="row " >
           <div class="col-sm-12" >
-            <div class="card card-primary">
+              <div class="card card-primary">
+                  <div class="card-header">
+                      <h3 class="card-title"><strong>Search Invoice</strong></h3>
+                  </div>
+                  <div class="card-body">
+
+                      <div class="row">
+                          <div class="col-sm-12">
+                              <form  method="post" action="#">
+                                  <div class="row">
+                                      <div class="col-sm-1">{%csrf_token%}</div>
+                                      <div class="col-sm-8">
+                                          <input type="text" class="form-control" name="search-box" id="search-box" autocomplete="off" required>
+                                      </div>
+                                      <div class="col-sm-2">
+                                          <button type="submit" class="btn btn-block btn-primary">
+                                                      <i class="nav-icon fas fa-search"></i>&nbsp;
+                                                      Search
+                                          </button>
+                                      </div>
+                                      <div class="col-sm-1"></div>
+                                  </div>
+                              </form>
+                          </div>
+
+
+
+                      </div>
+                  </div>
+              </div>
+
+            <div class="card ">
+                <div class="card-header">
+                    <h3 class="card-title"><strong>
+                        {% if search_sub != 'done' %}
+                        Recent 50 invoices
+                        {%else%}
+                        Search Result(s)
+                        {% endif %}
+                    </strong></h3>
+                </div>
                 <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid" aria-describedby="example1_info">
+                    <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" role="grid" >
                         <thead>
                         <tr role="row">
-                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Invoice Number: activate to sort column descending">
+                            <th tabindex="0"  rowspan="1" colspan="1">
                             Invoice Number
                         </th>
-                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Invoice Date: activate to sort column ascending">
+                            <th tabindex="0"  rowspan="1" colspan="1">
                             Invoice Date
                         </th>
-                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Item(s): activate to sort column ascending">
+                            <th tabindex="0" rowspan="1" colspan="1" >
                             Item(s)
                         </th>
-                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Client Name: activate to sort column ascending">
+                            <th tabindex="0" rowspan="1" colspan="1" >
                             Client Name
-                        </th>
-                         <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">
+                        </th><th tabindex="0" rowspan="1" colspan="1" >
                             Status
-                        </th>
-                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Amount: activate to sort column ascending">
+                        </th><th tabindex="0" rowspan="1" colspan="1" >
                             Amount
-                        </th>
-                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Due Amount: activate to sort column ascending">
+                        </th><th tabindex="0"  rowspan="1" colspan="1" >
                         Due Amount
-                        </th>
-                        <th>
+                        </th><th  tabindex="0"  rowspan="1" colspan="1" style="display: none;">
 
-                        </th>
-                        </tr>
+                        </th></tr>
                         </thead>
                         <tbody>
                         {% for obj,desc in invo_items.items %}
                         {%if obj.c_status != 'revoked' and obj.c_status != 'cancel'%}
                         <tr role="row" class="odd">
-                            <td tabindex="0" class="sorting_1"><a href="{% url 'invo_preview' obj.c_invoice_num|slice:str_slice%}" target="_blank">{{obj.c_invoice_num|slice:str_slice}}</a> </td>
+                            <td tabindex="0" ><a href="{% url 'invo_preview' obj.c_invoice_num|slice:str_slice%}" target="_blank">{{obj.c_invoice_num|slice:str_slice}}</a> </td>
                             <td>{{obj.c_invoice_date|stringformat:'s'}}</td>
-                            <td>{{desc|slice:':-1'}}</td>
+                            <td >{{desc|slice:':-2'}}</td>
                             <td>{{obj.sub_client_id.sub_client_name}}</td>
                             <td style="color:{%if obj.c_status == 'open'%}red{%endif%}{%if obj.c_status == 'close'%}green{%endif%}">{{obj.c_status|upper}}</td>
                             <td align="right">{{obj.c_total_amount|floatformat:2|intcomma}}</td>
@@ -67,6 +102,7 @@
 
                 </div>
             </div>
+
           </div>
         </div>
 

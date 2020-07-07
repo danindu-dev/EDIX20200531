@@ -18,14 +18,14 @@ def all_job_s(request):
     stat = '0'
     today = str(datetime.now().date())
     rpt_today = (datetime.now().date())
-    from_date = str(datetime.now().date() - timedelta(days=30))
+    from_date = str(datetime.now().date() - timedelta(days=18250))
 
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
         from_date = request.POST['report_from_d']
         th = ['Client', 'Job Count', 'Net Amount', 'Discount', 'TAX Amount', 'Total with TAX', 'Received Amount','Due Amount']
-        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id)
+        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id).order_by('-c_invoice_date')
         all_invo = all_invo_not_date.filter(c_invoice_date__range=[request.POST['report_from_d'], request.POST['report_to_d']])
         all_invo_oc = all_invo.filter(Q(c_status="open") | Q(c_status="close"))
         all_clients = sub_clients.objects.filter(sub_mc_id=user_d.u_mc_id)
@@ -89,14 +89,14 @@ def unsettled_job_s(request):
     tdl=[]
     stat = '0'
     today = str(datetime.now().date())
-    from_date = str(datetime.now().date() - timedelta(days=30))
+    from_date = str(datetime.now().date() - timedelta(days=18250))
     rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
         from_date = request.POST['report_from_d']
         th = ['Client', 'Job Count', 'Net Amount', 'Discount', 'TAX Amount', 'Total with TAX', 'Received Amount','Due Amount']
-        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id)
+        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id).order_by('-c_invoice_date')
         unstl_all_invo_not_date = all_invo_not_date.filter(c_status='open')
         all_invo = unstl_all_invo_not_date.filter(c_invoice_date__range=[request.POST['report_from_d'], request.POST['report_to_d']])
         all_clients = sub_clients.objects.filter(sub_mc_id=user_d.u_mc_id)
@@ -161,14 +161,14 @@ def settled_job_s(request):
     tdl=[]
     stat = '0'
     today = str(datetime.now().date())
-    from_date = str(datetime.now().date() - timedelta(days=30))
+    from_date = str(datetime.now().date() - timedelta(days=18250))
     rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
         from_date = request.POST['report_from_d']
         th = ['Client', 'Job Count', 'Net Amount', 'Discount', 'TAX Amount', 'Total with TAX', 'Received Amount','Due Amount']
-        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id)
+        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id).order_by('-c_invoice_date')
         unstl_all_invo_not_date = all_invo_not_date.filter(c_status='close')
         all_invo = unstl_all_invo_not_date.filter(c_invoice_date__range=[request.POST['report_from_d'], request.POST['report_to_d']])
         all_clients = sub_clients.objects.filter(sub_mc_id=user_d.u_mc_id)
@@ -233,14 +233,14 @@ def all_job_d(request):
     tdl=[]
     stat = '0'
     today = str(datetime.now().date())
-    from_date = str(datetime.now().date() - timedelta(days=30))
+    from_date = str(datetime.now().date() - timedelta(days=18250))
     rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
         from_date = request.POST['report_from_d']
         th = ['#', 'Date', 'Invoice Number', 'Client', 'Description', 'Amount', 'Deductions', 'Tax','Total','Received','Due Amout','Rcvd Date','Chq No','Bank','Status']
-        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id)
+        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id).order_by('-c_invoice_date')
         all_invo = all_invo_not_date.filter(c_invoice_date__range=[request.POST['report_from_d'], request.POST['report_to_d']])
         all_invo = all_invo.filter(Q(c_status = 'open') | Q(c_status = 'close'))
 
@@ -298,14 +298,14 @@ def unsettled_job_d(request):
     tdl=[]
     stat = '0'
     today = str(datetime.now().date())
-    from_date = str(datetime.now().date() - timedelta(days=30))
+    from_date = str(datetime.now().date() - timedelta(days=18250))
     rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
         from_date = request.POST['report_from_d']
         th = ['#', 'Date', 'Invoice Number', 'Client', 'Description', 'Amount', 'Deductions', 'Tax','Total','Received','Due Amout','Rcvd Date','Chq No','Bank','Status']
-        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id)
+        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id).order_by('-c_invoice_date')
         all_invo = all_invo_not_date.filter(c_invoice_date__range=[request.POST['report_from_d'], request.POST['report_to_d']])
         all_invo = all_invo.filter(c_status = 'open')
 
@@ -363,14 +363,14 @@ def settled_job_d(request):
     tdl=[]
     stat = '0'
     today = str(datetime.now().date())
-    from_date = str(datetime.now().date() - timedelta(days=30))
+    from_date = str(datetime.now().date() - timedelta(days=18250))
     rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
         from_date = request.POST['report_from_d']
         th = ['#', 'Date', 'Invoice Number', 'Client', 'Description', 'Amount', 'Deductions', 'Tax','Total','Received','Due Amout','Rcvd Date','Chq No','Bank','Status']
-        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id)
+        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id).order_by('-c_invoice_date')
         all_invo = all_invo_not_date.filter(c_invoice_date__range=[request.POST['report_from_d'], request.POST['report_to_d']])
         all_invo = all_invo.filter(c_status = 'close')
 
@@ -428,7 +428,7 @@ def cr(request):
     tdl=[]
     stat = '0'
     today = str(datetime.now().date())
-    from_date = str(datetime.now().date() - timedelta(days=30))
+    from_date = str(datetime.now().date() - timedelta(days=18250))
     crd = datetime.now().date() + timedelta(days=15)
     rpt_today = datetime.now().date()
     if (request.method == "POST"):
@@ -436,7 +436,7 @@ def cr(request):
         today = request.POST['report_to_d']
         from_date = request.POST['report_from_d']
         th = ['Date', 'Invoice Number','Description', 'Net Amount', 'Discount', 'TAX Amount', 'Total with TAX', 'Received Amount','Due Amount']
-        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id)
+        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id).order_by('-c_invoice_date')
         all_invo = all_invo_not_date.filter(c_invoice_date__range=[request.POST['report_from_d'], request.POST['report_to_d']])
         all_invo_oc = all_invo.filter(c_status="open")
         all_clients = sub_clients.objects.filter(sub_mc_id=user_d.u_mc_id)
@@ -474,7 +474,7 @@ def cr(request):
                     rcvd_amount_i += float(invo_for_client.c_received_amount)
                     deduction += deduction_i
                     rcvd_amount += rcvd_amount_i
-                    desc=str(invo_for_client.c_description.replace('?', ',')[:-1])
+                    desc=str(invo_for_client.c_description.replace('?', ', ')[:-2])
                     ctd_temp = [str(invo_for_client.c_invoice_date), str(invo_for_client.c_invoice_num[mc_id_len:]), desc, "{:,.2f}".format(total),
                                "{:,.2f}".format(deduction_i), "{:,.2f}".format(tax), "{:,.2f}".format(float(invo_for_client.c_total_amount)),
                                "{:,.2f}".format(rcvd_amount_i), "{:,.2f}".format(float(invo_for_client.c_total_amount) - rcvd_amount_i)]
@@ -499,7 +499,7 @@ def client_wise_unsettled(request):
     tdl=[]
     stat = '0'
     today = str(datetime.now().date())
-    from_date = str(datetime.now().date() - timedelta(days=30))
+    from_date = str(datetime.now().date() - timedelta(days=18250))
     crd = str(datetime.now().date() + timedelta(days=15))
     rpt_today = datetime.now().date()
     if (request.method == "POST"):
@@ -507,7 +507,7 @@ def client_wise_unsettled(request):
         today = request.POST['report_to_d']
         from_date = request.POST['report_from_d']
         th = ['#','Date', 'Invoice Number','Client','Description', 'Net Amount', 'Discount', 'TAX Amount', 'Total with TAX', 'Received Amount','Due Amount','Status']
-        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id)
+        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id = user_d.u_mc_id).order_by('-c_invoice_date')
         all_invo = all_invo_not_date.filter(c_invoice_date__range=[request.POST['report_from_d'], request.POST['report_to_d']])
         all_invo_oc = all_invo.filter(c_status="open")
         all_clients = sub_clients.objects.filter(sub_mc_id=user_d.u_mc_id)
@@ -571,7 +571,7 @@ def client_wise_settled(request):
     tdl = []
     stat = '0'
     today = str(datetime.now().date())
-    from_date = str(datetime.now().date() - timedelta(days=30))
+    from_date = str(datetime.now().date() - timedelta(days=18250))
     crd = str(datetime.now().date() + timedelta(days=15))
     rpt_today = (datetime.now().date())
     if (request.method == "POST"):
@@ -580,7 +580,7 @@ def client_wise_settled(request):
         from_date = request.POST['report_from_d']
         th = ['#', 'Date', 'Invoice Number', 'Client', 'Description', 'Net Amount', 'Discount', 'TAX Amount',
               'Total with TAX', 'Received Amount', 'Due Amount', 'Status']
-        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id)
+        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id).order_by('-c_invoice_date')
         all_invo = all_invo_not_date.filter(
             c_invoice_date__range=[request.POST['report_from_d'], request.POST['report_to_d']])
         all_invo_oc = all_invo.filter(c_status="close")
@@ -651,14 +651,14 @@ def bank_summary(request):
     tdl = []
     stat = '0'
     today = str(datetime.now().date())
-    from_date = str(datetime.now().date() - timedelta(days=30))
+    from_date = str(datetime.now().date() - timedelta(days=18250))
     rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
         today = request.POST['report_to_d']
         from_date = request.POST['report_from_d']
         th = ['Count', 'Received Amount']
-        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id)
+        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id).order_by('-c_invoice_date')
         all_invo = all_invo_not_date.filter(
             c_invoice_date__range=[request.POST['report_from_d'], request.POST['report_to_d']])
         all_invo_oc = all_invo.filter(c_payment_type="BANK")
@@ -692,7 +692,7 @@ def bank_statement(request):
     tdl = []
     stat = '0'
     today = str(datetime.now().date())
-    from_date = str(datetime.now().date() - timedelta(days=30))
+    from_date = str(datetime.now().date() - timedelta(days=18250))
     rpt_today = (datetime.now().date())
     if (request.method == "POST"):
         stat = '1'
@@ -700,7 +700,7 @@ def bank_statement(request):
         from_date = request.POST['report_from_d']
         th = ['#', 'Date', 'Invoice Number', 'Client', 'Description', 'Net Amount', 'Discount', 'TAX Amount',
               'Total with TAX', 'Received Amount', 'Due Amount', 'Status']
-        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id)
+        all_invo_not_date = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id).order_by('-c_invoice_date')
         all_invo = all_invo_not_date.filter(
             c_invoice_date__range=[request.POST['report_from_d'], request.POST['report_to_d']])
         all_invo_oc = all_invo.filter(c_payment_type="BANK")

@@ -79,15 +79,33 @@ def invo_settle_conf(request):
     else:
         return render(request, 'BPMS/invo_pay.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title': 'Payment', 'q': '1'})
 
+
 def invo_settle_view(request):
     user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
     mc_id_len = len(user_d.u_mc_id.mc_id)
     invo_edited=[]
-    invo_data = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id.mc_id)
+    invo_data = sub_credit_info.objects.none()
+    search_sub = ""
+    if (request.method == "POST"):
+        search_sub = "done"
+        invo_data_temp = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id.mc_id).order_by('-c_invoice_date')
+        invo_data = invo_data_temp.filter(Q(c_invoice_num__icontains=request.POST.get('search-box', '')) | Q(
+            c_description__icontains=request.POST.get('search-box', '')) | Q(
+            c_invoice_date__icontains=request.POST.get('search-box', '')) | Q(
+            c_total_amount__icontains=request.POST.get('search-box', '')) | Q(
+            c_status__icontains=request.POST.get('search-box', '')) | Q(
+            c_received_amount__icontains=request.POST.get('search-box', '')) | Q(
+            c_received_date__icontains=request.POST.get('search-box', '')) | Q(
+            c_cheque_num__icontains=request.POST.get('search-box', '')) | Q(
+            c_payment_type__icontains=request.POST.get('search-box', ''))| Q(
+            sub_client_id=sub_clients.objects.filter(sub_client_id=user_d.u_mc_id.mc_id+request.POST.get('search-box', '324df'))[:1]) | Q(
+            c_PO_num__icontains=request.POST.get('search-box', '')))
+    else:
+        invo_data = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id.mc_id).order_by('-c_invoice_date')[:50]
     for item in invo_data:
-        invo_edited.append(item.c_description.replace("?",","))
+        invo_edited.append(item.c_description.replace("?",", "))
         item.c_received_amount = -1*item.c_received_amount
     invo_items = dict(zip(invo_data,invo_edited))
     str_slice=str(mc_id_len)+":"
 
-    return render(request, 'BPMS/invo_pay_view.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'View Payments', 'invo_items':invo_items, 'mc_id_len':mc_id_len,'str_slice':str_slice})
+    return render(request, 'BPMS/invo_pay_view.html', {'user_d':users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'search_sub':search_sub, 'page_title':'View Payments', 'invo_items':invo_items, 'mc_id_len':mc_id_len,'str_slice':str_slice})
