@@ -95,7 +95,7 @@ table td, table th { border: 1px solid black; padding: 5px; }
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 	width:49%;
 }
-
+/**/
 .btn-success {
     color: #fff;
     background-color: #28a745;
