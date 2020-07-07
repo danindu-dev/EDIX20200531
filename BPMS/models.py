@@ -32,7 +32,7 @@ class sub_clients(models.Model):
     sub_client_id = models.CharField(max_length=15, primary_key=True)
     sub_client_name = models.CharField(max_length=250)
     sub_address = models.CharField(max_length=500)
-    sub_tele = models.CharField(max_length=15)
+    sub_tele = models.CharField(max_length=250)
     sub_contact_person = models.CharField(max_length=100)
     sub_mc_id = models.ForeignKey(mc_details, on_delete=models.CASCADE)
     status = models.BooleanField()
