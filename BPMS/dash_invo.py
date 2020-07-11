@@ -10,30 +10,35 @@ from django.db.models import Q
 def issue(request):
     if (request.method == "POST"):
         if request.POST['invoice_number'] and request.POST['invoice_date'] and request.POST['cid'] and request.POST['alltext'] and request.POST['allnum'] and request.POST['alltax'] and request.POST['g_total_to_submit'] and request.POST['invoice_due_date'] :
-            user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
-            new_invoice_reg = sub_credit_info()
-            new_invoice_reg.c_invoice_num= user_d.u_mc_id.mc_id+request.POST['invoice_number']
-            new_invoice_reg.c_invoice_date= request.POST['invoice_date']
-            new_invoice_reg.sub_client_id = sub_clients.objects.get(sub_client_id=str(user_d.u_mc_id.mc_id+request.POST['cid'].upper()))
-            new_invoice_reg.c_description = request.POST['alltext']
-            new_invoice_reg.c_detail_amount = request.POST['allnum']
-            new_invoice_reg.c_tax_string = request.POST['alltax']
-            new_invoice_reg.c_total_amount = float(request.POST['g_total_to_submit'])
-            new_invoice_reg.c_tax1_name=request.POST['tax_name']
-            new_invoice_reg.c_tax1 = float(request.POST['tax_amount'])
-            new_invoice_reg.c_discount = float(request.POST.get('deduction_value', '0'))
-            new_invoice_reg.c_PO_num = request.POST.get('ponum', 'Not Available')
-            new_invoice_reg.c_due_date = request.POST['invoice_due_date']
-            new_invoice_reg.c_received_amount=0
-            new_invoice_reg.c_received_date="1111-11-11"
-            new_invoice_reg.sub_bank_id = sub_bank.objects.get(sub_bank_id="pending")
-            new_invoice_reg.c_mc_id=user_d.u_mc_id
-            new_invoice_reg.c_status="open"
-            new_invoice_reg.save()
-            update_mc = mc_details.objects.get(mc_id=user_d.u_mc_id.mc_id)
-            update_mc.mc_lastinvoice = new_invoice_reg.c_invoice_num
-            update_mc.save()
-            return render(request, 'BPMS/new_invoice.html', {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'New Invoice', 'save': str(request.POST['invoice_number'])})
+            if len(sub_credit_info.objects.filter(c_invoice_num=user_d.u_mc_id.mc_id+request.POST['invoice_number'])) == 0 :
+                user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
+                new_invoice_reg = sub_credit_info()
+                new_invoice_reg.c_invoice_num= user_d.u_mc_id.mc_id+request.POST['invoice_number']
+                new_invoice_reg.c_invoice_date= request.POST['invoice_date']
+                new_invoice_reg.sub_client_id = sub_clients.objects.get(sub_client_id=str(user_d.u_mc_id.mc_id+request.POST['cid'].upper()))
+                new_invoice_reg.c_description = request.POST['alltext']
+                new_invoice_reg.c_detail_amount = request.POST['allnum']
+                new_invoice_reg.c_tax_string = request.POST['alltax']
+                new_invoice_reg.c_total_amount = float(request.POST['g_total_to_submit'])
+                new_invoice_reg.c_tax1_name=request.POST['tax_name']
+                new_invoice_reg.c_tax1 = float(request.POST['tax_amount'])
+                new_invoice_reg.c_discount = float(request.POST.get('deduction_value', '0'))
+                new_invoice_reg.c_PO_num = request.POST.get('ponum', 'Not Available')
+                new_invoice_reg.c_due_date = request.POST['invoice_due_date']
+                new_invoice_reg.c_received_amount=0
+                new_invoice_reg.c_received_date="1111-11-11"
+                new_invoice_reg.sub_bank_id = sub_bank.objects.get(sub_bank_id="pending")
+                new_invoice_reg.c_mc_id=user_d.u_mc_id
+                new_invoice_reg.c_status="open"
+                new_invoice_reg.save()
+                update_mc = mc_details.objects.get(mc_id=user_d.u_mc_id.mc_id)
+                update_mc.mc_lastinvoice = new_invoice_reg.c_invoice_num
+                update_mc.save()
+                return render(request, 'BPMS/new_invoice.html', {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')), 'page_title':'New Invoice', 'save': str(request.POST['invoice_number'])})
+            else:
+                return render(request, 'BPMS/new_invoice.html',
+                              {'user_d': users.objects.get(u_user_id=request.session.get('u_name', 'ALL')),
+                               'page_title': 'New Invoice', 'save': 'Invoice Number already in use!'})
         else:
             return render(request, 'BPMS/new_invoice.html',
                       {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')),'page_title':'New Invoice', 'save': 'Incomplete!'})
