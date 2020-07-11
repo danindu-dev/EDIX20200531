@@ -10,8 +10,9 @@ from django.db.models import Q
 def issue(request):
     if (request.method == "POST"):
         if request.POST['invoice_number'] and request.POST['invoice_date'] and request.POST['cid'] and request.POST['alltext'] and request.POST['allnum'] and request.POST['alltax'] and request.POST['g_total_to_submit'] and request.POST['invoice_due_date'] :
+            user_d = users.objects.get(u_user_id=request.session.get('u_name', 'ALL'))
             if len(sub_credit_info.objects.filter(c_invoice_num=user_d.u_mc_id.mc_id+request.POST['invoice_number'])) == 0 :
-                user_d = users.objects.get(u_user_id=request.session.get('u_name','ALL'))
+
                 new_invoice_reg = sub_credit_info()
                 new_invoice_reg.c_invoice_num= user_d.u_mc_id.mc_id+request.POST['invoice_number']
                 new_invoice_reg.c_invoice_date= request.POST['invoice_date']
