@@ -39,13 +39,13 @@ def issue(request):
             else:
                 return render(request, 'BPMS/new_invoice.html',
                               {'user_d': users.objects.get(u_user_id=request.session.get('u_name', 'ALL')),
-                               'page_title': 'New Invoice', 'save': 'Invoice Number already in use!'})
+                               'page_title': 'New Invoice', 'save': 'Invoice Number already in use!','error_stat':'true'})
         else:
             return render(request, 'BPMS/new_invoice.html',
-                      {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')),'page_title':'New Invoice', 'save': 'Incomplete!'})
+                      {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')),'page_title':'New Invoice', 'save': 'Incomplete!','error_stat':'true'})
     else:
         return render(request, 'BPMS/new_invoice.html',
-                      {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')),'page_title':'New Invoice', 'save': 'not submited!'})
+                      {'user_d': users.objects.get(u_user_id=request.session.get('u_name','ALL')),'page_title':'New Invoice', 'save': 'not submited!','error_stat':'true'})
 
 
 def invo_edit_update(request):
