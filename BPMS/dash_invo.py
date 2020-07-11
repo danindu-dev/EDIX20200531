@@ -140,7 +140,7 @@ def invo_view(request):
     search_sub = ""
     if (request.method == "POST"):
         search_sub = "done"
-        invo_data_temp = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id.mc_id).order_by('-c_invoice_date')
+        invo_data_temp = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id.mc_id).order_by('-c_invoice_num')
         invo_data=invo_data_temp.filter(Q(c_invoice_num__icontains=request.POST.get('search-box', '')) | Q(
             c_description__icontains=request.POST.get('search-box', '')) | Q(
             c_invoice_date__icontains=request.POST.get('search-box', '')) | Q(
@@ -149,7 +149,7 @@ def invo_view(request):
             c_status__icontains=request.POST.get('search-box', '')) | Q(
             c_PO_num__icontains=request.POST.get('search-box', '')))
     else:
-        invo_data = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id.mc_id).order_by('-c_invoice_date')[:50]
+        invo_data = sub_credit_info.objects.filter(c_mc_id=user_d.u_mc_id.mc_id).order_by('-c_invoice_num')[:50]
     for item in invo_data:
         invo_edited.append(item.c_description.replace("?",", "))
     invo_items = dict(zip(invo_data,invo_edited))
